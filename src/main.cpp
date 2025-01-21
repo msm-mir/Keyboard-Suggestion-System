@@ -6,7 +6,7 @@ using namespace std;
 
 bool editFiles(QDir &dir, QStringList &fileNames, string folder);
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
-bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
+bool openFilesWriteOnly(QDir dir, QString fileName, QString fileContent);
 void toLowerCase(string &word);
 
 class Node {
@@ -92,19 +92,17 @@ public:
             this->root = newNode;
         }
 
-        int i = 0;
-        while (i != (int)word.length()) {
-            if (root->getChildren(word[i]) == nullptr) {
+        for (char c : word) {
+            if (root->getChildren(c) == nullptr) {
                 Node *newNode = new Node();
                 newNode->setParent(root);
-                newNode->setLetter(word[i]);
+                newNode->setLetter(c);
                 newNode->setFileNames(fileName);
 
-                root->setChildren(newNode, word[i]);
+                root->setChildren(newNode, c);
             }
 
-            root = root->getChildren(word[i]);
-            i++;
+            root = root->getChildren(c);
         }
     }
 
@@ -117,7 +115,8 @@ public:
     }
 };
 
-bool fillTheTree(Tree tree, QDir dir, QStringList fileNames);
+bool fillTheTree(Tree &tree, QDir dir, QStringList fileNames);
+void textToWords(Tree &tree, QString fileContent, QString fileName);
 
 int main() {
     Tree tree;
@@ -136,10 +135,10 @@ bool editFiles(QDir &dir, QStringList &fileNames, string folder) {
     dir.setPath("C:/Users/bpc/Desktop/" + QString::fromStdString(folder));
     fileNames = dir.entryList(QDir::Files);
 
-    for (QString i : fileNames) {
+    for (QString s : fileNames) {
         QString fileContent;
-        openFilesReadOnly(dir, i, fileContent);
-        openFilesWriteOnly(dir, i, fileContent);
+        openFilesReadOnly(dir, s, fileContent);
+        openFilesWriteOnly(dir, s, fileContent);
     }
 
     return true;
@@ -161,7 +160,7 @@ bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent) {
     return true;
 }
 //open file to write the edited text into it
-bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent) {
+bool openFilesWriteOnly(QDir dir, QString fileName, QString fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::WriteOnly)) {
@@ -183,8 +182,7 @@ void toLowerCase(string &word) {
 }
 
 //read every file and extract its text
-bool fillTheTree(Tree tree, QDir dir, QStringList fileNames) {
-
+bool fillTheTree(Tree &tree, QDir dir, QStringList fileNames) {
     for (QString i : fileNames) {
         QFile file(dir.filePath(i));
 
@@ -194,10 +192,27 @@ bool fillTheTree(Tree tree, QDir dir, QStringList fileNames) {
         }
 
         QString fileContent = file.readAll();
-
+        textToWords(tree, fileContent, i);
 
         file.close();
     }
 
     return true;
+}
+
+//convert file content to words
+void textToWords(Tree &tree, QString fileContent, QString fileName) {
+    string word = "";
+
+    for (char c : fileContent.toStdString()) {
+        if (c == ' ') {
+            if (word != "") {
+                toLowerCase(word);
+                tree.insert(word, fileName);
+                word = "";
+            }
+        } else {
+            word += c;
+        }
+    }
 }
