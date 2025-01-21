@@ -7,6 +7,7 @@ using namespace std;
 bool editFiles(QString folder);
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
 bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
+void toLowerCase(string word);
 
 class Node {
 private:
@@ -32,25 +33,53 @@ public:
     void setParent(Node *parent) {
         this->parent = parent;
     }
-    void setChildren(Node *child, char letter) {
-        this->children[letter - 'a'] = child;
+    void setChildren(Node *child, int idx) {
+        this->children[idx - 'a'] = child;
+    }
+    void setLetter(char letter) {
+        this->letter = letter;
+        this->word += letter;
     }
     void setFileNames(QString fileName) {
         this->fileNames.append(fileName);
     }
 
     //getter
-    QStringList getFileNames() {
-        return this->fileNames;
-    }
     Node* getParent() {
         return this->parent;
     }
     Node* getChildren(int idx) {
-        return this->children[idx];
+        return this->children[idx - 'a'];
     }
-    char getEdges(int idx) {
-        return this->edges[idx];
+    char getLetter() {
+        return this->letter;
+    }
+    string getWord() {
+        return this->word;
+    }
+    QStringList getFileNames() {
+        return this->fileNames;
+    }
+
+};
+
+class Tree {
+private:
+    Node *root;
+
+public:
+    Tree() {
+        this->root = nullptr;
+    }
+
+    //setter
+    void setRoot(Node *root) {
+        this->root = root;
+    }
+
+    //getter
+    Node* getRoot() {
+        return this->root;
     }
 
 };
@@ -60,7 +89,7 @@ int main() {
     cin >> folder;
 
     if (editFiles(QString::fromStdString(folder))) {
-
+        Tree tree;
     } else return 0;
 }
 
