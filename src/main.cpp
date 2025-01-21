@@ -82,6 +82,29 @@ public:
         return this->root;
     }
 
+    void insert(string word, QString fileName) {
+        Node *root = this->root;
+
+        if (root == nullptr) {
+            Node *newNode = new Node();
+            this->root = newNode;
+        }
+
+        int i = 0;
+        while (i != (int)word.length()) {
+            if (root->getChildren(word[i]) == nullptr) {
+                Node *newNode = new Node();
+                newNode->setParent(root);
+                newNode->setLetter(word[i]);
+                newNode->setFileNames(fileName);
+
+                root->setChildren(newNode, word[i]);
+            }
+
+            root = root->getChildren(word[i]);
+            i++;
+        }
+    }
 };
 
 int main() {
