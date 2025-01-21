@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool editFiles(QString folder);
+bool editFiles(QDir &dir, QStringList &fileNames, string folder);
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
 bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
 void toLowerCase(string &word);
@@ -107,21 +107,34 @@ public:
             i++;
         }
     }
+
+    void deleteWord(string word) {
+
+    }
+
+    void search(string word) {
+
+    }
 };
 
+bool fillTheTree(Tree tree, QDir dir, QStringList fileNames);
+
 int main() {
+    Tree tree;
+    QStringList fileNames;
+    QDir dir;
+
     string folder;
     cin >> folder;
 
-    if (editFiles(QString::fromStdString(folder))) {
-        Tree tree;
-    } else return 0;
+    if (!editFiles(dir, fileNames, folder)) return 0;
+    if (!fillTheTree(tree, dir, fileNames)) return 0;
 }
 
 //get a list of files' name;
-bool editFiles(QString folder) {
-    QDir dir("C:/Users/bpc/Desktop/" + folder);
-    QStringList fileNames = dir.entryList(QDir::Files);
+bool editFiles(QDir &dir, QStringList &fileNames, string folder) {
+    dir.setPath("C:/Users/bpc/Desktop/" + QString::fromStdString(folder));
+    fileNames = dir.entryList(QDir::Files);
 
     for (QString i : fileNames) {
         QString fileContent;
@@ -167,4 +180,24 @@ bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent) {
 //convert a string to lower case
 void toLowerCase(string &word) {
     transform(word.begin(), word.end(), word.begin(), ::tolower);
+}
+
+//read every file and extract its text
+bool fillTheTree(Tree tree, QDir dir, QStringList fileNames) {
+
+    for (QString i : fileNames) {
+        QFile file(dir.filePath(i));
+
+        if (!file.open(QFile::ReadOnly)) {
+            cout << "Cannot open file";
+            return false;
+        }
+
+        QString fileContent = file.readAll();
+
+
+        file.close();
+    }
+
+    return true;
 }
