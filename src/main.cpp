@@ -10,6 +10,7 @@ bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
 QStringList fileNamesByCondition(QStringList, QStringList, QStringList);
+void printFileNames(QStringList);
 
 class Node {
 private:
@@ -218,11 +219,7 @@ int main() {
         toLowerCase(notInclude);
         QString qNotInclude = QString::fromStdString(notInclude);
 
-        if (tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude).isEmpty()) {
-            cout << "Not Found" << endl;
-        } else {
-
-        }
+        printFileNames(tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude));
     }
 }
 
@@ -290,4 +287,19 @@ QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude
     set_difference(set1.begin(), set1.end(), set3.begin(), set3.end(), inserter(difference, difference.begin()));
 
     return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
+}
+
+//print file names
+void printFileNames(QStringList fileNames) {
+    if (fileNames.isEmpty()) {
+        cout << "Not Found!" << endl;
+        return;
+    }
+
+    int cnt = 0;
+    for (QString s : fileNames) {
+        cout << s.toStdString() << "/t";
+        if (cnt != 0 && cnt % 5 == 0) cout << endl;
+        cnt++;
+    }
 }
