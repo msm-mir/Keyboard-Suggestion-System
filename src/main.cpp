@@ -110,7 +110,7 @@ public:
 
     }
 
-    void search(string word) {
+    Node* search(string word) {
 
     }
 };
@@ -123,11 +123,36 @@ int main() {
     QStringList fileNames;
     QDir dir;
 
+    cout << "Folder: ";
     string folder;
     cin >> folder;
 
     if (!editFiles(dir, fileNames, folder)) return 0;
     if (!fillTheTree(tree, dir, fileNames)) return 0;
+
+    while (true) {
+        cout << "Include: ";
+        string include;
+        cin >> include;
+
+        cout << "At Least Include: ";
+        string atLeastInclude;
+        cin >> atLeastInclude;
+
+        cout << "Not Include: ";
+        string notInclude;
+        cin >> notInclude;
+
+        if (include == "0") {
+            return 0;
+        } else {
+            if (tree.search(include) == nullptr) {
+                cout << "Not Found" << endl;
+            } else {
+
+            }
+        }
+    }
 }
 
 //get a list of files' name;
@@ -202,17 +227,11 @@ bool fillTheTree(Tree &tree, QDir dir, QStringList fileNames) {
 
 //convert file content to words
 void textToWords(Tree &tree, QString fileContent, QString fileName) {
-    string word = "";
+    QStringList words = fileContent.split(' ', Qt::SkipEmptyParts);
 
-    for (char c : fileContent.toStdString()) {
-        if (c == ' ') {
-            if (word != "") {
-                toLowerCase(word);
-                tree.insert(word, fileName);
-                word = "";
-            }
-        } else {
-            word += c;
-        }
+    for (QString q : words) {
+        string s = q.toStdString();
+        toLowerCase(s);
+        tree.insert(s, fileName);
     }
 }
