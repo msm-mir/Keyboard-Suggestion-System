@@ -117,12 +117,12 @@ public:
 
     //insert words in tree
     void insertWord(string word, QString fileName) {
-        Node *root = this->root;
-
-        if (root == nullptr) {
+        if (this->root == nullptr) {
             Node *newNode = new Node();
             this->root = newNode;
         }
+
+        Node *root = this->root;
 
         for (char c : word) {
             if (root->getChildren(c) == nullptr) {
