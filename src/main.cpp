@@ -161,7 +161,20 @@ public:
     QStringList searchWord(QString word) {
         if (word.isEmpty()) return QStringList();
 
+        Node *root = this->root;
 
+        for (char c : word.toStdString()) {
+            if (root->getChildren(c) == nullptr) {
+                return QStringList();
+            }
+            root = root->getChildren(c);
+
+            if (root->getWord() == word.toStdString()) {
+                return root->getFileNames();
+            }
+        }
+
+        return QStringList();
     }
 
     //delete a word in tree
