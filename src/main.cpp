@@ -83,6 +83,36 @@ public:
         return this->root;
     }
 
+    //read every file and extract its text
+    bool fillTheTree(QDir dir, QStringList fileNames) {
+        for (QString i : fileNames) {
+            QFile file(dir.filePath(i));
+
+            if (!file.open(QFile::ReadOnly)) {
+                cout << "Cannot open file";
+                return false;
+            }
+
+            QString fileContent = file.readAll();
+            this->textToWords(fileContent, i);
+
+            file.close();
+        }
+
+        return true;
+    }
+
+    //convert file content to words
+    void textToWords(QString fileContent, QString fileName) {
+        QStringList words = fileContent.split(' ', Qt::SkipEmptyParts);
+
+        for (QString q : words) {
+            string s = q.toStdString();
+            toLowerCase(s);
+            this->insertWord(s, fileName);
+        }
+    }
+
     //insert words in tree
     void insertWord(string word, QString fileName) {
         Node *root = this->root;
@@ -104,11 +134,6 @@ public:
 
             root = root->getChildren(c);
         }
-    }
-
-    //delete a word in tree
-    void deleteWord(string word) {
-
     }
 
     //find file names by words
@@ -138,10 +163,12 @@ public:
 
 
     }
-};
 
-bool fillTheTree(Tree&, QDir, QStringList);
-void textToWords(Tree&, QString, QString);
+    //delete a word in tree
+    void deleteWord(string word) {
+
+    }
+};
 
 int main() {
     Tree tree;
@@ -153,7 +180,7 @@ int main() {
     cin >> folder;
 
     if (!editFiles(dir, fileNames, folder)) return 0;
-    if (!fillTheTree(tree, dir, fileNames)) return 0;
+    if (!tree.fillTheTree(dir, fileNames)) return 0;
 
     while (true) {
         string include, atLeastInclude, notInclude;
@@ -230,36 +257,6 @@ bool openFilesWriteOnly(QDir dir, QString fileName, QString fileContent) {
 //convert a string to lower case
 void toLowerCase(string &word) {
     transform(word.begin(), word.end(), word.begin(), ::tolower);
-}
-
-//read every file and extract its text
-bool fillTheTree(Tree &tree, QDir dir, QStringList fileNames) {
-    for (QString i : fileNames) {
-        QFile file(dir.filePath(i));
-
-        if (!file.open(QFile::ReadOnly)) {
-            cout << "Cannot open file";
-            return false;
-        }
-
-        QString fileContent = file.readAll();
-        textToWords(tree, fileContent, i);
-
-        file.close();
-    }
-
-    return true;
-}
-
-//convert file content to words
-void textToWords(Tree &tree, QString fileContent, QString fileName) {
-    QStringList words = fileContent.split(' ', Qt::SkipEmptyParts);
-
-    for (QString q : words) {
-        string s = q.toStdString();
-        toLowerCase(s);
-        tree.insertWord(s, fileName);
-    }
 }
 
 //find the right file names for output
