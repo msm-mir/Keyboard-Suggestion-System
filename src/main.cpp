@@ -7,7 +7,7 @@ using namespace std;
 bool editFiles(QString folder);
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
 bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
-void toLowerCase(string word);
+void toLowerCase(string &word);
 
 class Node {
 private:
@@ -33,7 +33,7 @@ public:
     void setParent(Node *parent) {
         this->parent = parent;
     }
-    void setChildren(Node *child, int idx) {
+    void setChildren(Node *child, char idx) {
         this->children[idx - 'a'] = child;
     }
     void setLetter(char letter) {
@@ -48,7 +48,7 @@ public:
     Node* getParent() {
         return this->parent;
     }
-    Node* getChildren(int idx) {
+    Node* getChildren(char idx) {
         return this->children[idx - 'a'];
     }
     char getLetter() {
@@ -83,6 +83,8 @@ public:
     }
 
     void insert(string word, QString fileName) {
+        toLowerCase(word);
+
         Node *root = this->root;
 
         if (root == nullptr) {
@@ -160,4 +162,9 @@ bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent) {
     file.close();
 
     return true;
+}
+
+//convert a string to lower case
+void toLowerCase(string &word) {
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
 }
