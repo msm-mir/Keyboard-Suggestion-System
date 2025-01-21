@@ -4,10 +4,11 @@
 
 using namespace std;
 
-bool editFiles(QDir &dir, QStringList &fileNames, string folder);
-bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
-bool openFilesWriteOnly(QDir dir, QString fileName, QString fileContent);
-void toLowerCase(string &word);
+bool editFiles(QDir&, QStringList&, string);
+bool openFilesReadOnly(QDir, QString, QString&);
+bool openFilesWriteOnly(QDir, QString, QString);
+void toLowerCase(string&);
+QStringList conditionFileNames(QStringList, QStringList, QStringList);
 
 class Node {
 private:
@@ -82,9 +83,8 @@ public:
         return this->root;
     }
 
-    void insert(string word, QString fileName) {
-        toLowerCase(word);
-
+    //insert words in tree
+    void insertWord(string word, QString fileName) {
         Node *root = this->root;
 
         if (root == nullptr) {
@@ -106,17 +106,42 @@ public:
         }
     }
 
+    //delete a word in tree
     void deleteWord(string word) {
 
     }
 
-    Node* search(string word) {
+    //find file names by words
+    QStringList searchFileNames(QString qInclude, QString qAtLeastInclude, QString qNotInclude) {
+        QStringList includeList = qInclude.split(' ', Qt::SkipEmptyParts);
+        QStringList atLeastIncludeList = qAtLeastInclude.split(' ', Qt::SkipEmptyParts);
+        QStringList notIncludeList = qNotInclude.split(' ', Qt::SkipEmptyParts);
+
+        QStringList includeFileNames, atLeastIncludeFileNames, notIncludeFileNames;
+
+        for (QString s : includeList) {
+            includeFileNames.append(this->searchWord(s));
+        }
+        for (QString s : atLeastIncludeList) {
+            atLeastIncludeFileNames.append(this->searchWord(s));
+        }
+        for (QString s : notIncludeList) {
+            notIncludeFileNames.append(this->searchWord(s));
+        }
+
+        return conditionFileNames(includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
+    }
+
+    //search words in tree and return file names
+    QStringList searchWord(QString word) {
+        if (word.isEmpty()) return QStringList();
+
 
     }
 };
 
-bool fillTheTree(Tree &tree, QDir dir, QStringList fileNames);
-void textToWords(Tree &tree, QString fileContent, QString fileName);
+bool fillTheTree(Tree&, QDir, QStringList);
+void textToWords(Tree&, QString, QString);
 
 int main() {
     Tree tree;
@@ -131,26 +156,27 @@ int main() {
     if (!fillTheTree(tree, dir, fileNames)) return 0;
 
     while (true) {
+        string include, atLeastInclude, notInclude;
+
         cout << "Include: ";
-        string include;
         cin >> include;
+        toLowerCase(include);
+        QString qInclude = QString::fromStdString(include);
 
         cout << "At Least Include: ";
-        string atLeastInclude;
         cin >> atLeastInclude;
+        toLowerCase(atLeastInclude);
+        QString qAtLeastInclude = QString::fromStdString(atLeastInclude);
 
         cout << "Not Include: ";
-        string notInclude;
         cin >> notInclude;
+        toLowerCase(notInclude);
+        QString qNotInclude = QString::fromStdString(notInclude);
 
-        if (include == "0") {
-            return 0;
+        if (tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude).isEmpty()) {
+            cout << "Not Found" << endl;
         } else {
-            if (tree.search(include) == nullptr) {
-                cout << "Not Found" << endl;
-            } else {
 
-            }
         }
     }
 }
@@ -232,6 +258,11 @@ void textToWords(Tree &tree, QString fileContent, QString fileName) {
     for (QString q : words) {
         string s = q.toStdString();
         toLowerCase(s);
-        tree.insert(s, fileName);
+        tree.insertWord(s, fileName);
     }
+}
+
+//find the right file names for output
+QStringList conditionFileNames(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
+
 }
