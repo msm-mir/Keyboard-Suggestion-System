@@ -209,16 +209,19 @@ int main() {
         cin >> include;
         toLowerCase(include);
         QString qInclude = QString::fromStdString(include);
+        qInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "At Least Include: ";
         cin >> atLeastInclude;
         toLowerCase(atLeastInclude);
         QString qAtLeastInclude = QString::fromStdString(atLeastInclude);
+        qAtLeastInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "Not Include: ";
         cin >> notInclude;
         toLowerCase(notInclude);
         QString qNotInclude = QString::fromStdString(notInclude);
+        qNotInclude.remove(QRegularExpression("[^a-z]"));
 
         QStringList finalFileNames = tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude);
         printFileNames(finalFileNames);
@@ -286,6 +289,14 @@ QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude
 
     QStringList subscription(intersectionSet.begin(), intersectionSet.end());
 
+    if (subscription.isEmpty()) {
+        if (include.isEmpty()) {
+            subscription = atLeastInclude;
+        } else if (atLeastInclude.isEmpty()) {
+            subscription = include;
+        }
+    }
+
     set<QString> set3(subscription.begin(), subscription.end());
     set<QString> set4(notInclude.begin(), notInclude.end());
 
@@ -304,8 +315,9 @@ void printFileNames(QStringList fileNames) {
 
     int cnt = 0;
     for (QString s : fileNames) {
-        cout << s.toStdString() << "/t";
+        cout << s.toStdString() << "\t";
         if (cnt != 0 && cnt % 5 == 0) cout << endl;
         cnt++;
     }
+    cout << endl;
 }
