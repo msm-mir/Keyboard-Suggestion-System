@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QDir>
+#include <QList>
 #include <QRegularExpression>
 
 using namespace std;
@@ -7,6 +8,52 @@ using namespace std;
 bool editFiles(QString folder);
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent);
 bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
+
+class Node {
+private:
+    QStringList fileNames;
+    Node *parent;
+    Node **children = new Node*[26];
+    char *edges = new char[26];
+
+public:
+    Node() {
+        this->fileNames.clear();
+        this->parent = nullptr;
+
+        for (int i = 0; i < 26; i++) {
+            this->children[i] = nullptr;
+            this->edges[i] = 0;
+        }
+    }
+
+    void setFileNames(QString fileName) {
+        this->fileNames.append(fileName);
+    }
+    void setParent(Node *parent) {
+        this->parent = parent;
+    }
+    void setChildren(Node *child, char letter) {
+        int idx = tolower(letter) - 'a';
+
+        this->children[idx] = child;
+        this->edges[idx] = letter;
+    }
+
+    QStringList getFileNames() {
+        return this->fileNames;
+    }
+    Node* getParent() {
+        return this->parent;
+    }
+    Node* getChildren(int idx) {
+        return this->children[idx];
+    }
+    char getEdges(int idx) {
+        return this->edges[idx];
+    }
+
+};
 
 int main() {
     string folder;
@@ -20,9 +67,9 @@ int main() {
 bool editFiles(QString folder) {
     QDir dir("C:/Users/bpc/Desktop/" + folder);
     QStringList fileNames = dir.entryList(QDir::Files);
-    QString fileContent;
 
     for (QString i : fileNames) {
+        QString fileContent;
         openFilesReadOnly(dir, i, fileContent);
         openFilesWriteOnly(dir, i, fileContent);
     }
