@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QRegularExpression>
 #include <set>
+#include <vector>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void printFileNames(QStringList);
 class Node {
 private:
     Node *parent;
-    Node **children;
+    vector<Node*> children;
     char letter;
     string word;
     QStringList fileNames;
@@ -23,13 +24,10 @@ private:
 public:
     Node() {
         this->parent = nullptr;
-        this->children = new Node*[26];
+        this->children.resize(26, nullptr);
         this->letter = 0;
         this->word = "";
         this->fileNames.clear();
-
-        for (int i = 0; i < 26; i++)
-            this->children[i] = nullptr;
     }
 
     //setter
@@ -37,11 +35,11 @@ public:
         this->parent = parent;
     }
     void setChildren(Node *child, char idx) {
-        this->children[idx - 'a'] = child;
+        this->children.at(idx - 'a') = child;
     }
     void setLetter(char letter) {
         this->letter = letter;
-        this->word += letter;
+        this->word = this->parent->word + letter;
     }
     void setFileNames(QString fileName) {
         this->fileNames.append(fileName);
@@ -52,7 +50,7 @@ public:
         return this->parent;
     }
     Node* getChildren(char idx) {
-        return this->children[idx - 'a'];
+        return this->children.at(idx - 'a');
     }
     char getLetter() {
         return this->letter;
