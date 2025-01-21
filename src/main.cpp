@@ -1,6 +1,7 @@
 #include <iostream>
 #include <QDir>
 #include <QRegularExpression>
+#include <set>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ bool editFiles(QDir&, QStringList&, string);
 bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
-QStringList conditionFileNames(QStringList, QStringList, QStringList);
+QStringList fileNamesByCondition(QStringList, QStringList, QStringList);
 
 class Node {
 private:
@@ -154,7 +155,11 @@ public:
             notIncludeFileNames.append(this->searchWord(s));
         }
 
-        return conditionFileNames(includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
+        includeFileNames.removeDuplicates();
+        atLeastIncludeFileNames.removeDuplicates();
+        notIncludeFileNames.removeDuplicates();
+
+        return fileNamesByCondition(includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
     }
 
     //search words in tree and return file names
@@ -273,6 +278,16 @@ void toLowerCase(string &word) {
 }
 
 //find the right file names for output
-QStringList conditionFileNames(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
+QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
+    include.append(atLeastInclude);
+    include.removeDuplicates();
 
+    set<QString> set1(include.begin(), include.end());
+    set<QString> set2(atLeastInclude.begin(), atLeastInclude.end());
+    set<QString> set3(notInclude.begin(), notInclude.end());
+
+    set<QString> difference;
+    set_difference(set1.begin(), set1.end(), set3.begin(), set3.end(), inserter(difference, difference.begin()));
+
+    return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
 }
