@@ -183,8 +183,11 @@ public:
         return QStringList();
     }
 
-    //delete a word in tree
-    void deleteWord(string word) {
+    void updateSearchingNodes() {
+
+    }
+
+    void deleteWord() {
 
     }
 };
@@ -219,7 +222,8 @@ int main() {
         toLowerCase(notInclude);
         QString qNotInclude = QString::fromStdString(notInclude);
 
-        printFileNames(tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude));
+        QStringList finalFileNames = tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude);
+        printFileNames(finalFileNames);
     }
 }
 
@@ -276,15 +280,19 @@ void toLowerCase(string &word) {
 
 //find the right file names for output
 QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
-    include.append(atLeastInclude);
-    include.removeDuplicates();
-
     set<QString> set1(include.begin(), include.end());
     set<QString> set2(atLeastInclude.begin(), atLeastInclude.end());
-    set<QString> set3(notInclude.begin(), notInclude.end());
+
+    set<QString> intersectionSet;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
+
+    QStringList subscription(intersectionSet.begin(), intersectionSet.end());
+
+    set<QString> set3(subscription.begin(), subscription.end());
+    set<QString> set4(notInclude.begin(), notInclude.end());
 
     set<QString> difference;
-    set_difference(set1.begin(), set1.end(), set3.begin(), set3.end(), inserter(difference, difference.begin()));
+    set_difference(set3.begin(), set3.end(), set4.begin(), set4.end(), inserter(difference, difference.begin()));
 
     return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
 }
