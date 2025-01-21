@@ -1,6 +1,5 @@
 #include <iostream>
 #include <QDir>
-#include <QList>
 #include <QRegularExpression>
 
 using namespace std;
@@ -11,35 +10,36 @@ bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent);
 
 class Node {
 private:
-    QStringList fileNames;
     Node *parent;
-    Node **children = new Node*[26];
-    char *edges = new char[26];
+    Node **children;
+    char letter;
+    string word;
+    QStringList fileNames;
 
 public:
     Node() {
-        this->fileNames.clear();
         this->parent = nullptr;
+        this->children = new Node*[26];
+        this->letter = 0;
+        this->word = "";
+        this->fileNames.clear();
 
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++)
             this->children[i] = nullptr;
-            this->edges[i] = 0;
-        }
     }
 
-    void setFileNames(QString fileName) {
-        this->fileNames.append(fileName);
-    }
+    //setter
     void setParent(Node *parent) {
         this->parent = parent;
     }
     void setChildren(Node *child, char letter) {
-        int idx = tolower(letter) - 'a';
-
-        this->children[idx] = child;
-        this->edges[idx] = letter;
+        this->children[letter - 'a'] = child;
+    }
+    void setFileNames(QString fileName) {
+        this->fileNames.append(fileName);
     }
 
+    //getter
     QStringList getFileNames() {
         return this->fileNames;
     }
@@ -64,6 +64,7 @@ int main() {
     } else return 0;
 }
 
+//get a list of files' name;
 bool editFiles(QString folder) {
     QDir dir("C:/Users/bpc/Desktop/" + folder);
     QStringList fileNames = dir.entryList(QDir::Files);
@@ -76,6 +77,7 @@ bool editFiles(QString folder) {
 
     return true;
 }
+//open file to read and edit its text
 bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent) {
     QFile file(dir.filePath(fileName));
 
@@ -91,6 +93,7 @@ bool openFilesReadOnly(QDir dir, QString fileName, QString &fileContent) {
 
     return true;
 }
+//open file to write the edited text into it
 bool openFilesWriteOnly(QDir dir, QString fileName, QString &fileContent) {
     QFile file(dir.filePath(fileName));
 
