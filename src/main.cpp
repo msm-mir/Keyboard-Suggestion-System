@@ -169,13 +169,13 @@ public:
         this->editInputs(include, atLeastInclude, notInclude, includeList, atLeastIncludeList, notIncludeList);
 
         for (QString s : includeList) {
-            includeFileNames.append(this->searchWord(s));
+            includeFileNames.append(this->searchWord(s.toStdString()));
         }
         for (QString s : atLeastIncludeList) {
-            atLeastIncludeFileNames.append(this->searchWord(s));
+            atLeastIncludeFileNames.append(this->searchWord(s.toStdString()));
         }
         for (QString s : notIncludeList) {
-            notIncludeFileNames.append(this->searchWord(s));
+            notIncludeFileNames.append(this->searchWord(s.toStdString()));
         }
 
         includeFileNames.removeDuplicates();
@@ -186,20 +186,23 @@ public:
     }
 
     //search words in tree and return file names
-    QStringList searchWord(QString word) {
-        if (word.isEmpty()) return QStringList();
+    QStringList searchWord(string word) {
+        if (word == "") {
+            return QStringList();
+        }
 
         Node *root = this->root;
 
-        for (char c : word.toStdString()) {
+        for (char c : word) {
             if (root->getChildren(c) == nullptr) {
                 return QStringList();
             }
             root = root->getChildren(c);
 
-            if (root->getWord() == word.toStdString()) {
-                return root->getFileNames();
-            }
+        }
+
+        if (root->getWord() == word) {
+            return root->getFileNames();
         }
 
         return QStringList();
@@ -210,7 +213,7 @@ public:
     }
 
     void deleteWord(string word) {
-        if (this->root == nullptr) {
+        if (this->root == nullptr || word == "") {
             return;
         }
 
