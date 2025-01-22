@@ -170,12 +170,18 @@ public:
 
         this->editInputs(include, atLeastInclude, notInclude, includeList, atLeastIncludeList, notIncludeList);
 
+        int i = 0;
         for (QString s : includeList) {
-            if (!includeFileNames.isEmpty()) {
-                QStringList find = this->searchWord(s.toStdString());
-                QStringList subscr = findCommonElements(includeFileNames, find);
-                includeFileNames.append(subscr);
+            QStringList find = this->searchWord(s.toStdString());
+            QStringList common = findCommonElements(includeFileNames, find);
+
+            if (i == 0) {
+                includeFileNames.append(find);
+            } else {
+                includeFileNames = common;
             }
+
+            i++;
         }
         for (QString s : atLeastIncludeList) {
             atLeastIncludeFileNames.append(this->searchWord(s.toStdString()));
@@ -321,17 +327,17 @@ void toLowerCase(string &word) {
 
 //find the right file names for output
 QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
-    QStringList subscr = findCommonElements(include, atLeastInclude);
+    QStringList common = findCommonElements(include, atLeastInclude);
 
-    if (subscr.isEmpty()) {
+    if (common.isEmpty()) {
         if (include.isEmpty()) {
-            subscr = atLeastInclude;
+            common = atLeastInclude;
         } else if (atLeastInclude.isEmpty()) {
-            subscr = include;
+            common = include;
         }
     }
 
-    return removeCommonElements(subscr, notInclude);
+    return removeCommonElements(common, notInclude);
 }
 
 //find intersection of two qstringlist
