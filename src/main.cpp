@@ -130,6 +130,8 @@ public:
                 newNode->setFileNames(fileName);
 
                 root->setChildren(newNode, c);
+            } else {
+                root->getChildren(c)->setFileNames(fileName);
             }
 
             root = root->getChildren(c);
@@ -197,7 +199,7 @@ int main() {
 
     cout << "Folder: ";
     string folder;
-    cin >> folder;
+    getline(cin, folder);
 
     if (!editFiles(dir, fileNames, folder)) return 0;
     if (!tree.fillTheTree(dir, fileNames)) return 0;
@@ -206,19 +208,19 @@ int main() {
         string include, atLeastInclude, notInclude;
 
         cout << "Include: ";
-        cin >> include;
+        getline(cin, include);
         toLowerCase(include);
         QString qInclude = QString::fromStdString(include);
         qInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "At Least Include: ";
-        cin >> atLeastInclude;
+        getline(cin, atLeastInclude);
         toLowerCase(atLeastInclude);
         QString qAtLeastInclude = QString::fromStdString(atLeastInclude);
         qAtLeastInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "Not Include: ";
-        cin >> notInclude;
+        getline(cin, notInclude);
         toLowerCase(notInclude);
         QString qNotInclude = QString::fromStdString(notInclude);
         qNotInclude.remove(QRegularExpression("[^a-z]"));
@@ -309,15 +311,15 @@ QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude
 //print file names
 void printFileNames(QStringList fileNames) {
     if (fileNames.isEmpty()) {
-        cout << "Not Found!" << endl;
+        cout << "Not Found!\n\n";
         return;
     }
 
     int cnt = 0;
     for (QString s : fileNames) {
         cout << s.toStdString() << "\t";
-        if (cnt != 0 && cnt % 5 == 0) cout << endl;
+        if (cnt != 0 && cnt % 5 == 0) cout << "\n";
         cnt++;
     }
-    cout << endl;
+    cout << "\n\n";
 }
