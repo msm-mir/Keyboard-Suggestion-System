@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include <QDir>
+#include <QPushButton>
+#include <QFileDialog>
+#include <QRegularExpression>
+#include <set>
 
 using namespace std;
 
