@@ -131,17 +131,15 @@ public:
                 Node *newNode = new Node();
                 newNode->setParent(root);
                 newNode->setLetter(c);
-                newNode->setFileNames(fileName);
 
                 root->setChildren(newNode, c);
-            } else {
-                root->getChildren(c)->setFileNames(fileName);
             }
 
             root = root->getChildren(c);
         }
 
         root->setWord(word);
+        root->setFileNames(fileName);
     }
 
     //lower case, remove non-alphabet letters, list words seperate by ','
