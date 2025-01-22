@@ -142,13 +142,31 @@ public:
         root->setWord(word);
     }
 
-    //find file names by words
-    QStringList searchFileNames(QString qInclude, QString qAtLeastInclude, QString qNotInclude) {
-        QStringList includeList = qInclude.split(' ', Qt::SkipEmptyParts);
-        QStringList atLeastIncludeList = qAtLeastInclude.split(' ', Qt::SkipEmptyParts);
-        QStringList notIncludeList = qNotInclude.split(' ', Qt::SkipEmptyParts);
+    //lower case, remove non-alphabet letters, list words seperate by ','
+    void editInputs(string word1, string word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
+        toLowerCase(word1);
+        toLowerCase(word2);
+        toLowerCase(word3);
 
+        QString qWord1 = QString::fromStdString(word1);
+        QString qWord2 = QString::fromStdString(word2);
+        QString qWord3 = QString::fromStdString(word3);
+
+        qWord1.remove(QRegularExpression("[^a-z,]+"));
+        qWord2.remove(QRegularExpression("[^a-z,]+"));
+        qWord3.remove(QRegularExpression("[^a-z,]+"));
+
+        list1 = qWord1.split(',', Qt::SkipEmptyParts);
+        list2 = qWord2.split(',', Qt::SkipEmptyParts);
+        list3 = qWord3.split(',', Qt::SkipEmptyParts);
+    }
+
+    //find file names by words
+    QStringList searchFileNames(string include, string atLeastInclude, string notInclude) {
         QStringList includeFileNames, atLeastIncludeFileNames, notIncludeFileNames;
+        QStringList includeList, atLeastIncludeList, notIncludeList;
+
+        this->editInputs(include, atLeastInclude, notInclude, includeList, atLeastIncludeList, notIncludeList);
 
         for (QString s : includeList) {
             includeFileNames.append(this->searchWord(s));
@@ -213,23 +231,14 @@ int main() {
 
         cout << "Include: ";
         getline(cin, include);
-        toLowerCase(include);
-        QString qInclude = QString::fromStdString(include);
-        qInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "At Least Include: ";
         getline(cin, atLeastInclude);
-        toLowerCase(atLeastInclude);
-        QString qAtLeastInclude = QString::fromStdString(atLeastInclude);
-        qAtLeastInclude.remove(QRegularExpression("[^a-z]"));
 
         cout << "Not Include: ";
         getline(cin, notInclude);
-        toLowerCase(notInclude);
-        QString qNotInclude = QString::fromStdString(notInclude);
-        qNotInclude.remove(QRegularExpression("[^a-z]"));
 
-        QStringList finalFileNames = tree.searchFileNames(qInclude, qAtLeastInclude, qNotInclude);
+        QStringList finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude);
         printFileNames(finalFileNames);
     }
 }
