@@ -11,6 +11,7 @@ bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
 QStringList fileNamesByCondition(QStringList, QStringList, QStringList);
+QStringList subscription(QStringList, QStringList);
 void printFileNames(QStringList);
 
 class Node {
@@ -169,7 +170,11 @@ public:
         this->editInputs(include, atLeastInclude, notInclude, includeList, atLeastIncludeList, notIncludeList);
 
         for (QString s : includeList) {
-            includeFileNames.append(this->searchWord(s.toStdString()));
+            if (!includeFileNames.isEmpty()) {
+                QStringList find = this->searchWord(s.toStdString());
+                QStringList subscr = subscription(includeFileNames, find);
+                includeFileNames.append(subscr);
+            }
         }
         for (QString s : atLeastIncludeList) {
             atLeastIncludeFileNames.append(this->searchWord(s.toStdString()));
@@ -212,6 +217,7 @@ public:
 
     }
 
+    //delete a word from the tree
     void deleteWord(string word) {
         if (this->root == nullptr || word == "") {
             return;
@@ -314,29 +320,34 @@ void toLowerCase(string &word) {
 
 //find the right file names for output
 QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
-    set<QString> set1(include.begin(), include.end());
-    set<QString> set2(atLeastInclude.begin(), atLeastInclude.end());
+    QStringList subscr = subscription(include, atLeastInclude);
 
-    set<QString> intersectionSet;
-    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
-
-    QStringList subscription(intersectionSet.begin(), intersectionSet.end());
-
-    if (subscription.isEmpty()) {
+    if (subscr.isEmpty()) {
         if (include.isEmpty()) {
-            subscription = atLeastInclude;
+            subscr = atLeastInclude;
         } else if (atLeastInclude.isEmpty()) {
-            subscription = include;
+            subscr = include;
         }
     }
 
-    set<QString> set3(subscription.begin(), subscription.end());
+    set<QString> set3(subscr.begin(), subscr.end());
     set<QString> set4(notInclude.begin(), notInclude.end());
 
     set<QString> difference;
     set_difference(set3.begin(), set3.end(), set4.begin(), set4.end(), inserter(difference, difference.begin()));
 
     return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
+}
+
+//returns subscription of two qstringlist
+QStringList subscription(QStringList list1, QStringList list2) {
+    set<QString> set1(list1.begin(), list1.end());
+    set<QString> set2(list2.begin(), list2.end());
+
+    set<QString> intersectionSet;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
+
+    return QStringList(intersectionSet.begin(), intersectionSet.end());
 }
 
 //print file names
