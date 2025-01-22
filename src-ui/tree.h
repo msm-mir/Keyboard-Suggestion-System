@@ -2,7 +2,6 @@
 #define TREE_H
 
 #include "node.h"
-#include "search.h"
 #include <QDir>
 #include <QRegularExpression>
 
@@ -19,6 +18,7 @@ public:
 
     Node* getRoot();
 
+    void toLowerCase(string&);
     bool fillTheTree(QDir, QStringList);
     void textToWords(QString, QString);
     void insertWord(string, QString);

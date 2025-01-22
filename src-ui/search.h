@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QRegularExpression>
 #include <set>
+#include "tree.h"
 
 using namespace std;
 

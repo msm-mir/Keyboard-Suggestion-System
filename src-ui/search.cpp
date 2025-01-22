@@ -12,7 +12,7 @@ Search::~Search() {
 }
 
 void Search::connections() {
-    connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(onBrowseButtonClicked()));
+    connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
 }
 
 void Search::onSearchButtonClicked() {
@@ -37,7 +37,6 @@ bool Search::openFilesReadOnly(QDir dir, QString fileName, QString &fileContent)
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::ReadOnly)) {
-        cout << "Cannot open file";
         return false;
     }
 
@@ -53,7 +52,6 @@ bool Search::openFilesWriteOnly(QDir dir, QString fileName, QString fileContent)
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::WriteOnly)) {
-        cout << "Cannot open file for writing";
         return false;
     }
 

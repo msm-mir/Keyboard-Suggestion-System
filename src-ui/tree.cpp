@@ -14,13 +14,17 @@ Node* Tree::getRoot() {
     return this->root;
 }
 
+//convert a string to lower case
+void Tree::toLowerCase(string &word) {
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
+}
+
 //read every file and extract its text
 bool Tree::fillTheTree(QDir dir, QStringList fileNames) {
     for (QString i : fileNames) {
         QFile file(dir.filePath(i));
 
         if (!file.open(QFile::ReadOnly)) {
-            cout << "Cannot open file";
             return false;
         }
 
