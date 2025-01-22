@@ -11,7 +11,8 @@ bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
 QStringList fileNamesByCondition(QStringList, QStringList, QStringList);
-QStringList subscription(QStringList, QStringList);
+QStringList findCommonElements(QStringList, QStringList);
+QStringList removeCommonElements(QStringList, QStringList);
 void printFileNames(QStringList);
 
 class Node {
@@ -172,7 +173,7 @@ public:
         for (QString s : includeList) {
             if (!includeFileNames.isEmpty()) {
                 QStringList find = this->searchWord(s.toStdString());
-                QStringList subscr = subscription(includeFileNames, find);
+                QStringList subscr = findCommonElements(includeFileNames, find);
                 includeFileNames.append(subscr);
             }
         }
@@ -320,7 +321,7 @@ void toLowerCase(string &word) {
 
 //find the right file names for output
 QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
-    QStringList subscr = subscription(include, atLeastInclude);
+    QStringList subscr = findCommonElements(include, atLeastInclude);
 
     if (subscr.isEmpty()) {
         if (include.isEmpty()) {
@@ -330,17 +331,11 @@ QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude
         }
     }
 
-    set<QString> set3(subscr.begin(), subscr.end());
-    set<QString> set4(notInclude.begin(), notInclude.end());
-
-    set<QString> difference;
-    set_difference(set3.begin(), set3.end(), set4.begin(), set4.end(), inserter(difference, difference.begin()));
-
-    return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
+    return removeCommonElements(subscr, notInclude);
 }
 
-//returns subscription of two qstringlist
-QStringList subscription(QStringList list1, QStringList list2) {
+//find intersection of two qstringlist
+QStringList findCommonElements(QStringList list1, QStringList list2) {
     set<QString> set1(list1.begin(), list1.end());
     set<QString> set2(list2.begin(), list2.end());
 
@@ -348,6 +343,17 @@ QStringList subscription(QStringList list1, QStringList list2) {
     set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
 
     return QStringList(intersectionSet.begin(), intersectionSet.end());
+}
+
+//remove intersection of two qstringlist
+QStringList removeCommonElements(QStringList list1, QStringList list2) {
+    set<QString> set1(list1.begin(), list1.end());
+    set<QString> set2(list2.begin(), list2.end());
+
+    set<QString> difference;
+    set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(difference, difference.begin()));
+
+    return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
 }
 
 //print file names
