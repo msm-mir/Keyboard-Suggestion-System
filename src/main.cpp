@@ -209,8 +209,23 @@ public:
 
     }
 
-    void deleteWord() {
+    void deleteWord(string word) {
+        if (this->root == nullptr) {
+            return;
+        }
 
+        Node *root = this->root;
+
+        for (char c : word) {
+            if (root->getChildren(c) == nullptr) {
+                return;
+            }
+            root = root->getChildren(c);
+        }
+
+        if (root->getWord() == word) {
+            root->setWord("");
+        }
     }
 };
 
