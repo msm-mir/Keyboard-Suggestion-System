@@ -14,11 +14,6 @@ public:
     Search(QWidget *parent = nullptr);
     ~Search();
 
-    void connections();
-
-private slots:
-    void onBrowseButtonClicked();
-
 private:
     Ui::Search *ui;
 };

@@ -16,11 +16,11 @@ private:
     QStringList fileNames;
 
 public:
-    Node() {}
+    Node();
 
     //setter
     void setParent(Node*);
-    void setChildren(Node, char);
+    void setChildren(Node*, char);
     void setLetter(char);
     void setWord(string);
     void setFileNames(QString);
