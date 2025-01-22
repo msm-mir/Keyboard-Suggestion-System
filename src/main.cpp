@@ -10,9 +10,9 @@ bool editFiles(QDir&, QStringList&, string);
 bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
-QStringList fileNamesByCondition(QStringList, QStringList, QStringList);
+QStringList fileNamesByCondition(string, string, QStringList, QStringList, QStringList);
 QStringList findCommonElements(QStringList, QStringList);
-QStringList removeCommonElements(QStringList, QStringList);
+QStringList removeCommonElements(string, string, QStringList, QStringList);
 void printFileNames(QStringList);
 
 class Node {
@@ -145,7 +145,7 @@ public:
     }
 
     //lower case, remove non-alphabet letters, list words seperate by ','
-    void editInputs(string word1, string word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
+    void editInputs(string &word1, string &word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
         toLowerCase(word1);
         toLowerCase(word2);
         toLowerCase(word3);
@@ -194,7 +194,7 @@ public:
         atLeastIncludeFileNames.removeDuplicates();
         notIncludeFileNames.removeDuplicates();
 
-        return fileNamesByCondition(includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
+        return fileNamesByCondition(include, atLeastInclude, includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
     }
 
     //search words in tree and return file names
@@ -326,18 +326,19 @@ void toLowerCase(string &word) {
 }
 
 //find the right file names for output
-QStringList fileNamesByCondition(QStringList include, QStringList atLeastInclude, QStringList notInclude) {
+QStringList fileNamesByCondition(string sInclude, string sAtLeastInclude, QStringList include, QStringList atLeastInclude, QStringList notInclude) {
     QStringList common = findCommonElements(include, atLeastInclude);
 
     if (common.isEmpty()) {
-        if (include.isEmpty()) {
+        if (include.isEmpty() && sInclude == "") {
             common = atLeastInclude;
-        } else if (atLeastInclude.isEmpty()) {
+        }
+        if (atLeastInclude.isEmpty()) {
             common = include;
         }
     }
 
-    return removeCommonElements(common, notInclude);
+    return removeCommonElements(sInclude, sAtLeastInclude, common, notInclude);
 }
 
 //find intersection of two qstringlist
@@ -352,7 +353,7 @@ QStringList findCommonElements(QStringList list1, QStringList list2) {
 }
 
 //remove intersection of two qstringlist
-QStringList removeCommonElements(QStringList list1, QStringList list2) {
+QStringList removeCommonElements(string word1, string word2, QStringList list1, QStringList list2) {
     set<QString> set1(list1.begin(), list1.end());
     set<QString> set2(list2.begin(), list2.end());
 
