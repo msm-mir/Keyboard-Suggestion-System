@@ -39,7 +39,9 @@ public:
     }
     void setLetter(char letter) {
         this->letter = letter;
-        this->word = this->parent->word + letter;
+    }
+    void setWord(string word) {
+        this->word = word;
     }
     void setFileNames(QString fileName) {
         this->fileNames.append(fileName);
@@ -136,6 +138,8 @@ public:
 
             root = root->getChildren(c);
         }
+
+        root->setWord(word);
     }
 
     //find file names by words
