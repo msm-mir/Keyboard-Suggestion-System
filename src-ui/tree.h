@@ -2,7 +2,11 @@
 #define TREE_H
 
 #include "node.h"
+#include "search.h"
 #include <QDir>
+#include <QRegularExpression>
+
+using namespace std;
 
 class Tree {
 private:
@@ -21,6 +25,7 @@ public:
     void editInputs(string, string, string, QStringList&, QStringList&, QStringList&);
     QStringList searchFileNames(string, string, string, QDir);
     QStringList searchWord(string);
+    void updateSearchingNodes();
     void deleteWord(string);
 };
 

@@ -18,14 +18,12 @@ private:
 public:
     Node();
 
-    //setter
     void setParent(Node*);
     void setChildren(Node*, char);
     void setLetter(char);
     void setWord(string);
     void setFileNames(QString);
 
-    //getter
     Node* getParent();
     Node* getChildren(char);
     char getLetter();
