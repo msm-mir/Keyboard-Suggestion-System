@@ -239,6 +239,7 @@ public:
 
         if (root->getWord() == word) {
             root->setWord("");
+            root->setFileNames("");
         }
     }
 };
