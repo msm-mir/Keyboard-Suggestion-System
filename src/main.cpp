@@ -10,9 +10,9 @@ bool editFiles(QDir&, QStringList&, string);
 bool openFilesReadOnly(QDir, QString, QString&);
 bool openFilesWriteOnly(QDir, QString, QString);
 void toLowerCase(string&);
-QStringList fileNamesByCondition(string, string, QStringList, QStringList, QStringList);
+QStringList fileNamesByCondition(QStringList, QStringList, QStringList, QStringList, QStringList, QDir);
 QStringList findCommonElements(QStringList, QStringList);
-QStringList removeCommonElements(string, string, QStringList, QStringList);
+QStringList removeCommonElements(QStringList, QStringList, QStringList, QStringList, QDir);
 void printFileNames(QStringList);
 
 class Node {
@@ -145,7 +145,7 @@ public:
     }
 
     //lower case, remove non-alphabet letters, list words seperate by ','
-    void editInputs(string &word1, string &word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
+    void editInputs(string word1, string word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
         toLowerCase(word1);
         toLowerCase(word2);
         toLowerCase(word3);
@@ -164,7 +164,7 @@ public:
     }
 
     //find file names by words
-    QStringList searchFileNames(string include, string atLeastInclude, string notInclude) {
+    QStringList searchFileNames(string include, string atLeastInclude, string notInclude, QDir dir) {
         QStringList includeFileNames, atLeastIncludeFileNames, notIncludeFileNames;
         QStringList includeList, atLeastIncludeList, notIncludeList;
 
@@ -194,7 +194,7 @@ public:
         atLeastIncludeFileNames.removeDuplicates();
         notIncludeFileNames.removeDuplicates();
 
-        return fileNamesByCondition(include, atLeastInclude, includeFileNames, atLeastIncludeFileNames, notIncludeFileNames);
+        return fileNamesByCondition(includeList, atLeastIncludeList, includeFileNames, atLeastIncludeFileNames, notIncludeFileNames, dir);
     }
 
     //search words in tree and return file names
@@ -269,7 +269,7 @@ int main() {
         cout << "Not Include: ";
         getline(cin, notInclude);
 
-        QStringList finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude);
+        QStringList finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude, dir);
         printFileNames(finalFileNames);
     }
 }
@@ -326,11 +326,11 @@ void toLowerCase(string &word) {
 }
 
 //find the right file names for output
-QStringList fileNamesByCondition(string sInclude, string sAtLeastInclude, QStringList include, QStringList atLeastInclude, QStringList notInclude) {
+QStringList fileNamesByCondition(QStringList includeList, QStringList atLeastIncludeList, QStringList include, QStringList atLeastInclude, QStringList notInclude, QDir dir) {
     QStringList common = findCommonElements(include, atLeastInclude);
 
     if (common.isEmpty()) {
-        if (include.isEmpty() && sInclude == "") {
+        if (include.isEmpty() && includeList.isEmpty()) {
             common = atLeastInclude;
         }
         if (atLeastInclude.isEmpty()) {
@@ -338,7 +338,7 @@ QStringList fileNamesByCondition(string sInclude, string sAtLeastInclude, QStrin
         }
     }
 
-    return removeCommonElements(sInclude, sAtLeastInclude, common, notInclude);
+    return removeCommonElements(includeList, atLeastIncludeList, common, notInclude, dir);
 }
 
 //find intersection of two qstringlist
@@ -353,14 +353,18 @@ QStringList findCommonElements(QStringList list1, QStringList list2) {
 }
 
 //remove intersection of two qstringlist
-QStringList removeCommonElements(string word1, string word2, QStringList list1, QStringList list2) {
+QStringList removeCommonElements(QStringList primary1, QStringList primary2, QStringList list1, QStringList list2, QDir dir) {
+    if (primary1.isEmpty() && primary2.isEmpty()) {
+        list1 = dir.entryList(QDir::Files);
+    }
+
     set<QString> set1(list1.begin(), list1.end());
     set<QString> set2(list2.begin(), list2.end());
 
     set<QString> difference;
     set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(difference, difference.begin()));
 
-    return QStringList::fromList(QList<QString>(difference.begin(), difference.end()));
+    return QStringList(difference.begin(), difference.end());
 }
 
 //print file names
