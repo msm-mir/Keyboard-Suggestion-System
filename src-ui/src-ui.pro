@@ -10,10 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    search.cpp
+    node.cpp \
+    search.cpp \
+    tree.cpp
 
 HEADERS += \
-    search.h
+    node.h \
+    search.h \
+    tree.h
 
 FORMS += \
     search.ui
