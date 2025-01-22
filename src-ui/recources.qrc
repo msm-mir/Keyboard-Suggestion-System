@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/background.png</file>
+        <file>images/upload_icon.png</file>
+        <file>images/search_icon.png</file>
+        <file>images/filter_fill_icon.png</file>
+        <file>images/filter_icon.png</file>
+    </qresource>
+</RCC>
