@@ -88,7 +88,15 @@ void Search::onSearchButtonClicked() {
 }
 
 void Search::onFilterButtonClicked() {
-
+    if (ui->filterButton->isChecked()) {
+        ui->mustContainlineEdit->show();
+        ui->atLeastContainLineEdit->show();
+        ui->notContainLineEdit->show();
+    } else {
+        ui->mustContainlineEdit->hide();
+        ui->atLeastContainLineEdit->hide();
+        ui->notContainLineEdit->hide();
+    }
 }
 
 //convert a string to lower case
