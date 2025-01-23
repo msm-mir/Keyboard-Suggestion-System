@@ -176,6 +176,21 @@ QStringList Tree::fileNamesByCondition(QStringList includeList, QStringList atLe
     return removeCommonElements(includeList, atLeastIncludeList, common, notInclude, dir);
 }
 
+//remove intersection of two qstringlist
+QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary2, QStringList list1, QStringList list2, QDir dir) {
+    if (primary1.isEmpty() && primary2.isEmpty()) {
+        list1 = dir.entryList(QDir::Files);
+    }
+
+    set<QString> set1(list1.begin(), list1.end());
+    set<QString> set2(list2.begin(), list2.end());
+
+    set<QString> difference;
+    set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(difference, difference.begin()));
+
+    return QStringList(difference.begin(), difference.end());
+}
+
 void Tree::updateSearchingNodes() {
 
 }
