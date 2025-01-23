@@ -46,19 +46,18 @@ void Search::openFilesReadOnly(QString fileName, QString &fileContent) {
 }
 
 //open file to write the edited text into it
-bool Search::openFilesWriteOnly(QDir dir, QString fileName, QString fileContent) {
+void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::WriteOnly)) {
-        return false;
+        ui->errorLabel->setText("Cannot Open Files For Writing!");
+        return;
     }
 
     QTextStream out(&file);
     out << fileContent;
 
     file.close();
-
-    return true;
 }
 
 //convert a string to lower case
