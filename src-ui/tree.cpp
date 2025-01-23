@@ -160,6 +160,22 @@ QStringList Tree::findCommonElements(QStringList list1, QStringList list2) {
     return QStringList(intersectionSet.begin(), intersectionSet.end());
 }
 
+//find the right file names for output
+QStringList Tree::fileNamesByCondition(QStringList includeList, QStringList atLeastIncludeList, QStringList include, QStringList atLeastInclude, QStringList notInclude, QDir dir) {
+    QStringList common = findCommonElements(include, atLeastInclude);
+
+    if (common.isEmpty()) {
+        if (include.isEmpty() && includeList.isEmpty()) {
+            common = atLeastInclude;
+        }
+        if (atLeastInclude.isEmpty()) {
+            common = include;
+        }
+    }
+
+    return removeCommonElements(includeList, atLeastIncludeList, common, notInclude, dir);
+}
+
 void Tree::updateSearchingNodes() {
 
 }
