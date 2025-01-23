@@ -6,8 +6,6 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QRegularExpression>
-#include <set>
-#include "tree.h"
 
 using namespace std;
 
@@ -17,11 +15,13 @@ QT_END_NAMESPACE
 
 class Search : public QMainWindow { Q_OBJECT
 public:
+    QStringList fileNames;
+    QDir dir;
+
     Search(QWidget *parent = nullptr);
     ~Search();
 
     void connections();
-    bool editFiles(QDir&, QStringList&, string);
     bool openFilesReadOnly(QDir, QString, QString&);
     bool openFilesWriteOnly(QDir, QString, QString);
     void toLowerCase(string&);
@@ -31,7 +31,7 @@ public:
     void printFileNames(QStringList);
 
 private slots:
-    void onSearchButtonClicked();
+    bool editFiles();
 
 private:
     Ui::Search *ui;

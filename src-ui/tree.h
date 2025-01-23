@@ -2,6 +2,7 @@
 #define TREE_H
 
 #include "node.h"
+
 #include <QDir>
 #include <QRegularExpression>
 

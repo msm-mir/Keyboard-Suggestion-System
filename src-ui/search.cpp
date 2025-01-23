@@ -4,6 +4,8 @@
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
+
+
     connections();
 }
 
@@ -12,16 +14,13 @@ Search::~Search() {
 }
 
 void Search::connections() {
-    connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
-}
-
-void Search::onSearchButtonClicked() {
-    QString folderPath = QFileDialog::getExistingDirectory(this, "Select a Directory", "C:/Users/bpc/Desktop/");
+    connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
 }
 
 //get a list of files' name;
-bool Search::editFiles(QDir &dir, QStringList &fileNames, string folder) {
-    dir.setPath("C:/Users/bpc/Desktop/" + QString::fromStdString(folder));
+bool Search::editFiles() {
+    QString folderPath = QFileDialog::getExistingDirectory(this, "Select a Directory", "C:/Users/bpc/Desktop/");
+    dir.setPath(folderPath);
     fileNames = dir.entryList(QDir::Files);
 
     for (QString s : fileNames) {
