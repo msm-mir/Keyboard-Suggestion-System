@@ -7,6 +7,7 @@ Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     connections();
 
     error("", false);
+    onFilterButtonClicked();
 }
 
 Search::~Search() {
@@ -30,7 +31,11 @@ void Search::connections() {
 }
 
 void Search::error(QString text, bool set) {
-
+    if (set) {
+        ui->errorLabel->setText(text);
+    } else {
+        ui->errorLabel->hide();
+    }
 }
 
 //get a list of files' name;
@@ -112,6 +117,10 @@ void Search::onFilterButtonClicked() {
         ui->mustContainlineEdit->hide();
         ui->atLeastContainLineEdit->hide();
         ui->notContainLineEdit->hide();
+
+        ui->mustContainlineEdit->setText("");
+        ui->atLeastContainLineEdit->setText("");
+        ui->notContainLineEdit->setText("");
     }
 }
 
