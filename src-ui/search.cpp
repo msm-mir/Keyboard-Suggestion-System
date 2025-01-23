@@ -18,34 +18,33 @@ void Search::connections() {
 }
 
 //get a list of files' name;
-bool Search::editFiles() {
+void Search::editFiles() {
     QString folderPath = QFileDialog::getExistingDirectory(this, "Select a Directory", "C:/Users/bpc/Desktop/");
     dir.setPath(folderPath);
     fileNames = dir.entryList(QDir::Files);
 
     for (QString s : fileNames) {
         QString fileContent;
-        openFilesReadOnly(dir, s, fileContent);
+        openFilesReadOnly(s, fileContent);
         openFilesWriteOnly(dir, s, fileContent);
     }
-
-    return true;
 }
+
 //open file to read and edit its text
-bool Search::openFilesReadOnly(QDir dir, QString fileName, QString &fileContent) {
+void Search::openFilesReadOnly(QString fileName, QString &fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::ReadOnly)) {
-        return false;
+        ui->errorLabel->setText("Cannot Open Files!");
+        return;
     }
 
     fileContent = file.readAll();
     fileContent.remove(QRegularExpression("[^a-zA-Z ]+"));
 
     file.close();
-
-    return true;
 }
+
 //open file to write the edited text into it
 bool Search::openFilesWriteOnly(QDir dir, QString fileName, QString fileContent) {
     QFile file(dir.filePath(fileName));
