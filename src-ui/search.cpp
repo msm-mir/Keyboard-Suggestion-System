@@ -4,8 +4,6 @@
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
-
-
     connections();
 }
 
@@ -15,6 +13,15 @@ Search::~Search() {
 
 void Search::connections() {
     connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
+    connect(ui->searchButton, SIGNAL(clicked()), this, SLOT());
+    connect(ui->filterButton, SIGNAL(clicked()), this, SLOT());
+    connect(ui->mustContainSearchButton, SIGNAL(clicked()), this, SLOT());
+    connect(ui->atLeastCnotainSearchButton, SIGNAL(clicked()), this, SLOT());
+    connect(ui->notContainSearchButton, SIGNAL(clicked()), this, SLOT());
+}
+
+void Search::error(QString text, bool set) {
+
 }
 
 //get a list of files' name;
@@ -26,7 +33,11 @@ void Search::editFiles() {
     for (QString s : fileNames) {
         QString fileContent;
         openFilesReadOnly(s, fileContent);
-        openFilesWriteOnly(dir, s, fileContent);
+        openFilesWriteOnly(s, fileContent);
+    }
+
+    if (!tree.fillTheTree(dir, fileNames)) {
+        ui->errorLabel->setText("Cannot Open Files!");
     }
 }
 
