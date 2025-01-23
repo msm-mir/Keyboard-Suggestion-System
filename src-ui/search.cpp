@@ -69,6 +69,8 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
 }
 
 void Search::onSearchButtonClicked() {
+    ui->fileNamesLabel->setText("");
+
     if (ui->mustContainlineEdit->text().isEmpty() &&
         ui->atLeastContainLineEdit->text().isEmpty() &&
         ui->notContainLineEdit->text().isEmpty()) {
@@ -76,15 +78,17 @@ void Search::onSearchButtonClicked() {
             error("Search Something Bitch!", true);
         } else {
             string search = ui->searchButton->text().toStdString();
-            tree.searchFileNames(search, "", "", dir);
+            finalFileNames = tree.searchFileNames(search, "", "", dir);
         }
     } else {
         string include = ui->mustContainlineEdit->text().toStdString();
         string atLeastInclude = ui->atLeastContainLineEdit->text().toStdString();
         string notInclude = ui->notContainLineEdit->text().toStdString();
 
-        tree.searchFileNames(include, atLeastInclude, notInclude, dir);
+        finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude, dir);
     }
+
+    printFileNames(finalFileNames);
 }
 
 void Search::onFilterButtonClicked() {
@@ -122,10 +126,10 @@ QStringList Search::fileNamesByCondition(QStringList includeList, QStringList at
 
 //find intersection of two qstringlist
 QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
-    set<QString> set1(list1.begin(), list1.end());
-    set<QString> set2(list2.begin(), list2.end());
+    std::set<QString> set1(list1.begin(), list1.end());
+    std::set<QString> set2(list2.begin(), list2.end());
 
-    set<QString> intersectionSet;
+    std::set<QString> intersectionSet;
     set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
 
     return QStringList(intersectionSet.begin(), intersectionSet.end());
@@ -149,15 +153,16 @@ QStringList Search::removeCommonElements(QStringList primary1, QStringList prima
 //print file names
 void Search::printFileNames(QStringList fileNames) {
     if (fileNames.isEmpty()) {
-        cout << "Not Found!\n\n";
+        error("Not Found!", true);
         return;
     }
 
     int cnt = 0;
+    string output = "";
     for (QString s : fileNames) {
-        cout << s.toStdString() << "\t";
-        if (cnt != 0 && cnt % 5 == 0) cout << "\n";
+        output += s.toStdString() + "\t";
+        if (cnt != 0 && cnt % 5 == 0) output += "\n";
         cnt++;
     }
-    cout << "\n\n";
+
 }

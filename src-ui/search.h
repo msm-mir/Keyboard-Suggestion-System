@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QRegularExpression>
+#include <QString>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ QT_END_NAMESPACE
 
 class Search : public QMainWindow { Q_OBJECT
 public:
-    QStringList fileNames;
+    QStringList fileNames, finalFileNames;
     QDir dir;
     Tree tree;
 
@@ -35,6 +36,8 @@ public:
 
 private slots:
     void editFiles();
+    void onSearchButtonClicked();
+    void onFilterButtonClicked();
 
 private:
     Ui::Search *ui;
