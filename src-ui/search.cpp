@@ -33,6 +33,7 @@ void Search::connections() {
 void Search::error(QString text, bool set) {
     if (set) {
         ui->errorLabel->setText(text);
+        ui->errorLabel->show();
     } else {
         ui->errorLabel->hide();
     }
@@ -41,6 +42,7 @@ void Search::error(QString text, bool set) {
 //get a list of files' name;
 void Search::editFiles() {
     QString folderPath = QFileDialog::getExistingDirectory(this, "Select a Directory", "C:/Users/bpc/Desktop/");
+
     dir.setPath(folderPath);
     fileNames = dir.entryList(QDir::Files);
 
@@ -88,11 +90,18 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
 void Search::onSearchButtonClicked() {
     ui->fileNamesLabel->setText("");
 
+
+    if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
+        error("First Select A Folder, Bitch!", true);
+        return;
+    }
+
     if (ui->mustContainlineEdit->text().isEmpty() &&
         ui->atLeastContainLineEdit->text().isEmpty() &&
         ui->notContainLineEdit->text().isEmpty()) {
         if (ui->searchLineEdit->text().isEmpty()) {
             error("Search Something Bitch!", true);
+            return;
         } else {
             string search = ui->searchButton->text().toStdString();
             finalFileNames = tree.searchFileNames(search, "", "", dir);
@@ -154,4 +163,6 @@ void Search::printFileNames(QStringList fileNames) {
         if (cnt != 0 && cnt % 5 == 0) output += "\n";
         cnt++;
     }
+
+    ui->fileNamesLabel->setText(QString::fromStdString(output));
 }

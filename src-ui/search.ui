@@ -265,7 +265,7 @@ color: rgb(173, 174, 204);
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>290</y>
+      <y>270</y>
       <width>541</width>
       <height>31</height>
      </rect>
@@ -273,8 +273,8 @@ color: rgb(173, 174, 204);
     <property name="styleSheet">
      <string notr="true">QLabel {
 font: 12pt &quot;Code Next-Trial&quot;;
-color: rgb(170, 0, 0);
-
+qproperty-alignment: 'AlignHCenter';
+	color: rgb(204, 143, 156);
 }</string>
     </property>
     <property name="text">
@@ -284,10 +284,10 @@ color: rgb(170, 0, 0);
    <widget class="QLabel" name="fileNamesLabel">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>340</y>
-      <width>501</width>
-      <height>131</height>
+      <x>240</x>
+      <y>300</y>
+      <width>541</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -297,7 +297,7 @@ color: rgb(173, 174, 204);
 }</string>
     </property>
     <property name="text">
-     <string>file names</string>
+     <string/>
     </property>
    </widget>
   </widget>
