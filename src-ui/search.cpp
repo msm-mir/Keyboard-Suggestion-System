@@ -18,7 +18,7 @@ void Search::connections() {
     //click on buttons
     connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
     connect(ui->searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
-    connect(ui->filterButton, SIGNAL(toggled()), this, SLOT(onFilterButtonClicked()));
+    connect(ui->filterButton, SIGNAL(clicked()), this, SLOT(onFilterButtonClicked()));
 
     //click enter to search
     connect(ui->searchLineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
@@ -89,7 +89,7 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
 
 void Search::onSearchButtonClicked() {
     ui->fileNamesLabel->setText("");
-
+    error("", false);
 
     if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
         error("First Select A Folder, Bitch!", true);

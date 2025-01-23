@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     Search s;
-    s.show();
+    s.showMaximized();
 
     return a.exec();
 }
