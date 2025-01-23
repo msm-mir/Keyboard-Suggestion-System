@@ -108,46 +108,15 @@ void Search::toLowerCase(string &word) {
     transform(word.begin(), word.end(), word.begin(), ::tolower);
 }
 
-//find the right file names for output
-QStringList Search::fileNamesByCondition(QStringList includeList, QStringList atLeastIncludeList, QStringList include, QStringList atLeastInclude, QStringList notInclude, QDir dir) {
-    QStringList common = findCommonElements(include, atLeastInclude);
-
-    if (common.isEmpty()) {
-        if (include.isEmpty() && includeList.isEmpty()) {
-            common = atLeastInclude;
-        }
-        if (atLeastInclude.isEmpty()) {
-            common = include;
-        }
-    }
-
-    return removeCommonElements(includeList, atLeastIncludeList, common, notInclude, dir);
-}
-
 //find intersection of two qstringlist
 QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
-    std::set<QString> set1(list1.begin(), list1.end());
-    std::set<QString> set2(list2.begin(), list2.end());
-
-    std::set<QString> intersectionSet;
-    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
-
-    return QStringList(intersectionSet.begin(), intersectionSet.end());
-}
-
-//remove intersection of two qstringlist
-QStringList Search::removeCommonElements(QStringList primary1, QStringList primary2, QStringList list1, QStringList list2, QDir dir) {
-    if (primary1.isEmpty() && primary2.isEmpty()) {
-        list1 = dir.entryList(QDir::Files);
-    }
-
     set<QString> set1(list1.begin(), list1.end());
     set<QString> set2(list2.begin(), list2.end());
 
-    set<QString> difference;
-    set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(difference, difference.begin()));
+    set<QString> intersectionSet;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
 
-    return QStringList(difference.begin(), difference.end());
+    return QStringList(intersectionSet.begin(), intersectionSet.end());
 }
 
 //print file names
@@ -164,5 +133,4 @@ void Search::printFileNames(QStringList fileNames) {
         if (cnt != 0 && cnt % 5 == 0) output += "\n";
         cnt++;
     }
-
 }

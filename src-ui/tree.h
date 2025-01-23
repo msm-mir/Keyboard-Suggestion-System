@@ -5,6 +5,9 @@
 
 #include <QDir>
 #include <QRegularExpression>
+#include <QString>
+#include <QList>
+#include <set>
 
 using namespace std;
 
@@ -26,6 +29,10 @@ public:
     void editInputs(string, string, string, QStringList&, QStringList&, QStringList&);
     QStringList searchFileNames(string, string, string, QDir);
     QStringList searchWord(string);
+    //find intersection of two qstringlist
+    QStringList fileNamesByCondition(QStringList, QStringList, QStringList, QStringList, QStringList, QDir);
+    QStringList findCommonElements(QStringList, QStringList);
+    QStringList removeCommonElements(QStringList, QStringList, QStringList, QStringList, QDir);
     void updateSearchingNodes();
     void deleteWord(string);
 };

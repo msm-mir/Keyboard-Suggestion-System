@@ -63,7 +63,7 @@ border: none;
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit {
-font-size: 12pt;
+font: 12pt &quot;Code Next-Trial&quot;;
 background: transparent;
 border: none;
 border-bottom: 2px solid rgb(173, 174, 204);
@@ -92,7 +92,6 @@ color: rgb(173, 174, 204);
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(173, 174, 204);
-font-size: 50pt;
 font: 50pt &quot;Code Next-Trial&quot;;
 </string>
     </property>
@@ -183,7 +182,7 @@ border: none;
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit {
-font-size: 10pt;
+font: 10pt &quot;Code Next-Trial&quot;;
 background: transparent;
 border: none;
 border-bottom: 2px solid rgb(173, 174, 204);
@@ -213,7 +212,7 @@ color: rgb(173, 174, 204);
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit {
-font-size: 10pt;
+font: 10pt &quot;Code Next-Trial&quot;;
 background: transparent;
 border: none;
 border-bottom: 2px solid rgb(173, 174, 204);
@@ -243,7 +242,7 @@ color: rgb(173, 174, 204);
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit {
-font-size: 10pt;
+font: 10pt &quot;Code Next-Trial&quot;;
 background: transparent;
 border: none;
 border-bottom: 2px solid rgb(173, 174, 204);
@@ -273,15 +272,32 @@ color: rgb(173, 174, 204);
     </property>
     <property name="styleSheet">
      <string notr="true">QLabel {
-font-size: 12pt;
-background: transparent;
-border: none;
+font: 12pt &quot;Code Next-Trial&quot;;
 color: rgb(170, 0, 0);
 
 }</string>
     </property>
     <property name="text">
      <string>error</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileNamesLabel">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>340</y>
+      <width>501</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+font: 12pt &quot;Code Next-Trial&quot;;
+color: rgb(173, 174, 204);
+}</string>
+    </property>
+    <property name="text">
+     <string>file names</string>
     </property>
    </widget>
   </widget>

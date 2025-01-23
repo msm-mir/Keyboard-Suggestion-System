@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QRegularExpression>
 #include <QString>
+#include <QList>
+#include <set>
 
 using namespace std;
 
@@ -29,9 +31,7 @@ public:
     void openFilesReadOnly(QString, QString&);
     void openFilesWriteOnly(QString, QString);
     void toLowerCase(string&);
-    QStringList fileNamesByCondition(QStringList, QStringList, QStringList, QStringList, QStringList, QDir);
     QStringList findCommonElements(QStringList, QStringList);
-    QStringList removeCommonElements(QStringList, QStringList, QStringList, QStringList, QDir);
     void printFileNames(QStringList);
 
 private slots:

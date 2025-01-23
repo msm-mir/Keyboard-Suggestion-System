@@ -149,17 +149,6 @@ QStringList Tree::searchWord(string word) {
     return QStringList();
 }
 
-//find intersection of two qstringlist
-QStringList Tree::findCommonElements(QStringList list1, QStringList list2) {
-    set<QString> set1(list1.begin(), list1.end());
-    set<QString> set2(list2.begin(), list2.end());
-
-    set<QString> intersectionSet;
-    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
-
-    return QStringList(intersectionSet.begin(), intersectionSet.end());
-}
-
 //find the right file names for output
 QStringList Tree::fileNamesByCondition(QStringList includeList, QStringList atLeastIncludeList, QStringList include, QStringList atLeastInclude, QStringList notInclude, QDir dir) {
     QStringList common = findCommonElements(include, atLeastInclude);
@@ -174,6 +163,17 @@ QStringList Tree::fileNamesByCondition(QStringList includeList, QStringList atLe
     }
 
     return removeCommonElements(includeList, atLeastIncludeList, common, notInclude, dir);
+}
+
+//find intersection of two qstringlist
+QStringList Tree::findCommonElements(QStringList list1, QStringList list2) {
+    set<QString> set1(list1.begin(), list1.end());
+    set<QString> set2(list2.begin(), list2.end());
+
+    set<QString> intersectionSet;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
+
+    return QStringList(intersectionSet.begin(), intersectionSet.end());
 }
 
 //remove intersection of two qstringlist
