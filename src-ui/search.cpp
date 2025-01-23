@@ -5,6 +5,8 @@ Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
     connections();
+
+    error("", false);
 }
 
 Search::~Search() {
@@ -12,9 +14,19 @@ Search::~Search() {
 }
 
 void Search::connections() {
+    //click on buttons
     connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
     connect(ui->searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
     connect(ui->filterButton, SIGNAL(toggled()), this, SLOT(onFilterButtonClicked()));
+
+    //click enter to search
+    connect(ui->searchLineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
+    connect(ui->mustContainlineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
+    connect(ui->atLeastContainLineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
+    connect(ui->notContainLineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
+
+    //set cursor
+    ui->searchLineEdit->setFocus();
 }
 
 void Search::error(QString text, bool set) {
