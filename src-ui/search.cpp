@@ -13,11 +13,8 @@ Search::~Search() {
 
 void Search::connections() {
     connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
-    connect(ui->searchButton, SIGNAL(clicked()), this, SLOT());
-    connect(ui->filterButton, SIGNAL(clicked()), this, SLOT());
-    connect(ui->mustContainSearchButton, SIGNAL(clicked()), this, SLOT());
-    connect(ui->atLeastCnotainSearchButton, SIGNAL(clicked()), this, SLOT());
-    connect(ui->notContainSearchButton, SIGNAL(clicked()), this, SLOT());
+    connect(ui->searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
+    connect(ui->filterButton, SIGNAL(toggled()), this, SLOT(onFilterButtonClicked()));
 }
 
 void Search::error(QString text, bool set) {
@@ -37,7 +34,7 @@ void Search::editFiles() {
     }
 
     if (!tree.fillTheTree(dir, fileNames)) {
-        ui->errorLabel->setText("Cannot Open Files!");
+        error("Cannot Open Files!", true);
     }
 }
 
@@ -46,7 +43,7 @@ void Search::openFilesReadOnly(QString fileName, QString &fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::ReadOnly)) {
-        ui->errorLabel->setText("Cannot Open Files!");
+        error("Cannot Open Files!", true);
         return;
     }
 
@@ -61,7 +58,7 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::WriteOnly)) {
-        ui->errorLabel->setText("Cannot Open Files For Writing!");
+        error("Cannot Open Files For Writing!", true);
         return;
     }
 

@@ -68,6 +68,13 @@ background: transparent;
 border: none;
 border-bottom: 2px solid rgb(173, 174, 204);
 color: rgb(173, 174, 204);
+
+qproperty-placeholderText: &quot;search...&quot;;
+color: rgb(173, 174, 204);
+}
+
+QLineEdit:!focus {
+color: rgb(173, 174, 204);
 }</string>
     </property>
     <property name="text">
@@ -126,7 +133,7 @@ border: none;
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="filterButton1">
+   <widget class="QPushButton" name="filterButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -331,6 +338,28 @@ border: none;
       <width>20</width>
       <height>20</height>
      </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="errorLabel">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>290</y>
+      <width>541</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+font-size: 12pt;
+background: transparent;
+border: none;
+color: rgb(170, 0, 0);
+
+}</string>
+    </property>
+    <property name="text">
+     <string>error</string>
     </property>
    </widget>
   </widget>

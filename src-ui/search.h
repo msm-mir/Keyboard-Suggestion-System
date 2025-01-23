@@ -1,9 +1,10 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
+#include "tree.h"
+
 #include <QMainWindow>
 #include <QDir>
-#include <QPushButton>
 #include <QFileDialog>
 #include <QRegularExpression>
 
@@ -17,13 +18,15 @@ class Search : public QMainWindow { Q_OBJECT
 public:
     QStringList fileNames;
     QDir dir;
+    Tree tree;
 
     Search(QWidget *parent = nullptr);
     ~Search();
 
     void connections();
-    bool openFilesReadOnly(QDir, QString, QString&);
-    bool openFilesWriteOnly(QDir, QString, QString);
+    void error(QString, bool);
+    void openFilesReadOnly(QString, QString&);
+    void openFilesWriteOnly(QString, QString);
     void toLowerCase(string&);
     QStringList fileNamesByCondition(QStringList, QStringList, QStringList, QStringList, QStringList, QDir);
     QStringList findCommonElements(QStringList, QStringList);
@@ -31,7 +34,7 @@ public:
     void printFileNames(QStringList);
 
 private slots:
-    bool editFiles();
+    void editFiles();
 
 private:
     Ui::Search *ui;
