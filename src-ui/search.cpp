@@ -68,6 +68,29 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
     file.close();
 }
 
+void Search::onSearchButtonClicked() {
+    if (ui->mustContainlineEdit->text().isEmpty() &&
+        ui->atLeastContainLineEdit->text().isEmpty() &&
+        ui->notContainLineEdit->text().isEmpty()) {
+        if (ui->searchLineEdit->text().isEmpty()) {
+            error("Search Something Bitch!", true);
+        } else {
+            string search = ui->searchButton->text().toStdString();
+            tree.searchFileNames(search, "", "", dir);
+        }
+    } else {
+        string include = ui->mustContainlineEdit->text().toStdString();
+        string atLeastInclude = ui->atLeastContainLineEdit->text().toStdString();
+        string notInclude = ui->notContainLineEdit->text().toStdString();
+
+        tree.searchFileNames(include, atLeastInclude, notInclude, dir);
+    }
+}
+
+void Search::onFilterButtonClicked() {
+
+}
+
 //convert a string to lower case
 void Search::toLowerCase(string &word) {
     transform(word.begin(), word.end(), word.begin(), ::tolower);
