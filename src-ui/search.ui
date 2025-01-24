@@ -301,9 +301,9 @@ selection-background-color: rgb(207, 172, 178);</string>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>80</x>
       <y>290</y>
-      <width>1361</width>
+      <width>1371</width>
       <height>411</height>
      </rect>
     </property>
@@ -315,28 +315,20 @@ gridline-color: #ccadae;
 font: 12pt &quot;Code Next-Trial&quot;;
 color: rgb(204, 173, 174);
 }
+QTableWidget::item:hover {
+background-color: rgb(175, 148, 149);
+border-radius: 5px;
+}
 QHeaderView {
 background: transparent;
-border: none;
+border-color: rgb(204, 173, 174);
 font: 12pt &quot;Code Next-Trial&quot;;
 color: rgb(173, 174, 204);
+gridline-color: rgb(204, 173, 174);
 }
-/*QHeaderView::section {
-background: transparent;
-color: #adaecc;
-border: none;
-}*/
 QScrollBar:vertical, QScrollBar:horizontal {
 background: transparent;
-border-radius: 10px;
-}
-QScrollBar:vertical::handle, QScrollBar:horizontal::handle {
-border-radius: 10px;
-}
-QScrollBar:vertical::handle:hover, QScrollBar:horizontal::handle:hover {
-border-radius: 10px;
-}
-</string>
+}</string>
     </property>
    </widget>
   </widget>

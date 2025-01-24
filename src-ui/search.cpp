@@ -157,5 +157,17 @@ void Search::printFileNames(QStringList fileNames) {
     }
 
     FileNamesTable table(ui->tableWidget, fileNames, dir.absolutePath());
+
+    int totalWidth = 0;
+    for (int i = 0; i < ui->tableWidget->columnCount(); ++i) {
+        totalWidth += ui->tableWidget->columnWidth(i);
+    }
+    totalWidth += ui->tableWidget->verticalHeader()->width();
+
+    ui->tableWidget->setFixedSize(totalWidth + 17, 411);
+
+    int x = (1920 - ui->tableWidget->width()) / 2;
+    ui->tableWidget->move(x - 190, 290);
+
     ui->tableWidget->show();
 }
