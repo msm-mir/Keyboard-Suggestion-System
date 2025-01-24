@@ -4,7 +4,7 @@
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
-    proccess(0, false);
+    progress(0, false);
 
     connections();
 
@@ -41,9 +41,10 @@ void Search::error(QString text, bool set) {
     }
 }
 
-void Search::proccess(int proc, bool set) {
+void Search::progress(int prog, bool set) {
+    ui->progressBar->setFixedHeight(10);
     if (set) {
-        ui->progressBar->setValue((proc * 100) / fileNames.size());
+        ui->progressBar->setValue((prog * 100) / fileNames.size());
         ui->progressBar->show();
     } else {
         ui->progressBar->hide();
@@ -60,21 +61,23 @@ void Search::editFiles() {
     dir.setPath(folderPath);
     fileNames = dir.entryList(QDir::Files);
 
-    proccess(0, true);
-    int proc = 0;
+    progress(0, true);
+    int prog = 0;
     for (QString s : fileNames) {
         QString fileContent;
         openFilesReadOnly(s, fileContent);
         openFilesWriteOnly(s, fileContent);
 
-        proc++;
-        proccess(proc, true);
+        prog++;
+        progress(prog, true);
         QApplication::processEvents();
     }
 
     if (!tree.fillTheTree(dir, fileNames)) {
         error("Cannot Open Files!", true);
     }
+
+    progress(0, false);
 }
 
 //open file to read and edit its text
@@ -116,22 +119,25 @@ void Search::onSearchButtonClicked() {
         return;
     }
 
-    if (ui->mustContainlineEdit->text().isEmpty() &&
-        ui->atLeastContainLineEdit->text().isEmpty() &&
-        ui->notContainLineEdit->text().isEmpty()) {
-        if (ui->searchLineEdit->text().isEmpty()) {
-            error("Search Something!", true);
-            return;
+    if (ui->filterButton->isChecked()) {
+        if (ui->mustContainlineEdit->text().isEmpty() && ui->atLeastContainLineEdit->text().isEmpty() && ui->notContainLineEdit->text().isEmpty()) {
+            if (ui->searchLineEdit->text().isEmpty()) {
+                error("Search Something!", true);
+                return;
+            } else {
+                string search = ui->searchLineEdit->text().toStdString();
+                finalFileNames = tree.searchFileNames(search, "", "", dir);
+            }
         } else {
-            string search = ui->searchLineEdit->text().toStdString();
-            finalFileNames = tree.searchFileNames(search, "", "", dir);
+            string include = ui->mustContainlineEdit->text().toStdString();
+            string atLeastInclude = ui->atLeastContainLineEdit->text().toStdString();
+            string notInclude = ui->notContainLineEdit->text().toStdString();
+
+            finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude, dir);
         }
     } else {
-        string include = ui->mustContainlineEdit->text().toStdString();
-        string atLeastInclude = ui->atLeastContainLineEdit->text().toStdString();
-        string notInclude = ui->notContainLineEdit->text().toStdString();
-
-        finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude, dir);
+        string search = ui->searchLineEdit->text().toStdString();
+        finalFileNames = tree.searchFileNames(search, "", "", dir);
     }
 
     printFileNames(finalFileNames);
@@ -173,6 +179,7 @@ QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
 void Search::printFileNames(QStringList fileNames) {
     if (fileNames.isEmpty()) {
         error("Not Found!", true);
+        tree.backtrack();
         return;
     }
 
@@ -187,7 +194,10 @@ void Search::printFileNames(QStringList fileNames) {
     ui->tableWidget->setFixedSize(totalWidth + 17, 411);
 
     int x = (1920 - ui->tableWidget->width()) / 2;
-    ui->tableWidget->move(x - 190, 290);
+    ui->tableWidget->move(x - 185, 310);
+
+    ui->tableWidget->horizontalHeader()->setVisible(false);
+    ui->tableWidget->verticalHeader()->setVisible(false);
 
     ui->tableWidget->show();
 }

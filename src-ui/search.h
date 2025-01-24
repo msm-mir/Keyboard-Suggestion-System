@@ -29,7 +29,7 @@ public:
 
     void connections();
     void error(QString, bool);
-    void proccess(int, bool);
+    void progress(int, bool);
     void openFilesReadOnly(QString, QString&);
     void openFilesWriteOnly(QString, QString);
     void toLowerCase(string&);
