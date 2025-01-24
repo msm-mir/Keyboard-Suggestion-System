@@ -11,8 +11,14 @@ void FileNamesTable::populateTable(QTableWidget *table, QStringList fileNames, Q
     table->clear();
 
 
-    int rows = std::ceil(std::sqrt(fileNames.size()));
-    int cols = rows;
+    int cols, rows = std::ceil(std::sqrt(fileNames.size()));
+    if (rows <= 23) {
+        cols = rows;
+    }
+    else {
+        rows = std::ceil((double)fileNames.size() / 23);
+        cols = 23;
+    }
 
     table->setRowCount(rows);
     table->setColumnCount(cols);
