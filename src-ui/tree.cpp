@@ -191,10 +191,6 @@ QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary
     return QStringList(difference.begin(), difference.end());
 }
 
-void Tree::updateSearchingNodes() {
-
-}
-
 //delete a word from the tree
 void Tree::deleteWord(string word) {
     if (this->root == nullptr || word == "") {

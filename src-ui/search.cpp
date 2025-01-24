@@ -4,6 +4,8 @@
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
+    proccess(0, false);
+
     connections();
 
     error("", false);
@@ -39,6 +41,18 @@ void Search::error(QString text, bool set) {
     }
 }
 
+void Search::proccess(int proc, bool set) {
+    if (set) {
+        ui->progressBar->setValue((proc * 100) / fileNames.size());
+        ui->progressBar->show();
+    } else {
+        ui->progressBar->hide();
+        ui->progressBar->setMinimum(0);
+        ui->progressBar->setMaximum(100);
+        ui->progressBar->setValue(0);
+    }
+}
+
 //get a list of files' name;
 void Search::editFiles() {
     QString folderPath = QFileDialog::getExistingDirectory(this, "Select a Directory", "C:/Users/bpc/Desktop/");
@@ -46,10 +60,16 @@ void Search::editFiles() {
     dir.setPath(folderPath);
     fileNames = dir.entryList(QDir::Files);
 
+    proccess(0, true);
+    int proc = 0;
     for (QString s : fileNames) {
         QString fileContent;
         openFilesReadOnly(s, fileContent);
         openFilesWriteOnly(s, fileContent);
+
+        proc++;
+        proccess(proc, true);
+        QApplication::processEvents();
     }
 
     if (!tree.fillTheTree(dir, fileNames)) {
