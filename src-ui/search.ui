@@ -281,25 +281,6 @@ qproperty-alignment: 'AlignHCenter';
      <string>error</string>
     </property>
    </widget>
-   <widget class="QLabel" name="fileNamesLabel">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>290</y>
-      <width>1291</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel {
-font: 12pt &quot;Code Next-Trial&quot;;
-color: rgb(204, 173, 174);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
@@ -315,6 +296,32 @@ selection-background-color: rgb(207, 172, 178);</string>
     </property>
     <property name="value">
      <number>24</number>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>65</x>
+      <y>290</y>
+      <width>1451</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableWidget {
+background: transparent;
+border: none;
+gridline-color: #ccadae;
+font: 12pt &quot;Code Next-Trial&quot;;
+}
+QHeaderView::section {
+background: transparent;
+color: #adaecc;
+border: none;
+}
+QTableWidget::item {
+border: 1px solid #ccadae;
+}</string>
     </property>
    </widget>
   </widget>

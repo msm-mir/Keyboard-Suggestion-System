@@ -88,7 +88,7 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
 }
 
 void Search::onSearchButtonClicked() {
-    ui->fileNamesLabel->setText("");
+    ui->tableWidget->hide();
     error("", false);
 
     if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
@@ -156,13 +156,6 @@ void Search::printFileNames(QStringList fileNames) {
         return;
     }
 
-    int cnt = 0;
-    string output = "";
-    for (QString s : fileNames) {
-        output += s.toStdString() + "\t";
-        if (cnt != 0 && cnt % 5 == 0) output += "\n";
-        cnt++;
-    }
-
-    ui->fileNamesLabel->setText(QString::fromStdString(output));
+    FileNamesTable table(ui->tableWidget, fileNames, dir.absolutePath());
+    ui->tableWidget->show();
 }

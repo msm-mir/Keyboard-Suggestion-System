@@ -1,19 +1,15 @@
 #ifndef FILENAMESTABLE_H
 #define FILENAMESTABLE_H
 
-#include <QWidget>
+#include <QDir>
 #include <QTableWidget>
+#include <QDesktopServices>
+#include <QUrl>
 
-class FileNamesTable : public QWidget { Q_OBJECT
+class FileNamesTable {
 public:
-    FileNamesTable(QStringList&, QString&, QWidget *parent = nullptr);
-
-private slots:
-    void onCellClicked(int, int);
-
-private:
-    QTableWidget *table;
-    QString dirPath;
+    FileNamesTable(QTableWidget*, QStringList, QString);
+    void populateTable(QTableWidget*, QStringList, QString);
 
 };
 

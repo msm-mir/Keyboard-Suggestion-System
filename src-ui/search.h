@@ -2,6 +2,7 @@
 #define SEARCH_H
 
 #include "tree.h"
+#include "filenamestable.h"
 
 #include <QMainWindow>
 #include <QDir>
