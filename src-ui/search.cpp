@@ -92,7 +92,7 @@ void Search::onSearchButtonClicked() {
     error("", false);
 
     if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
-        error("First Select A Folder, Bitch!", true);
+        error("Select A Folder!", true);
         return;
     }
 
@@ -100,10 +100,10 @@ void Search::onSearchButtonClicked() {
         ui->atLeastContainLineEdit->text().isEmpty() &&
         ui->notContainLineEdit->text().isEmpty()) {
         if (ui->searchLineEdit->text().isEmpty()) {
-            error("Search Something Bitch!", true);
+            error("Search Something!", true);
             return;
         } else {
-            string search = ui->searchButton->text().toStdString();
+            string search = ui->searchLineEdit->text().toStdString();
             finalFileNames = tree.searchFileNames(search, "", "", dir);
         }
     } else {

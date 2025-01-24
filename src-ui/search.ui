@@ -284,10 +284,10 @@ qproperty-alignment: 'AlignHCenter';
    <widget class="QLabel" name="fileNamesLabel">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>140</x>
       <y>290</y>
-      <width>541</width>
-      <height>241</height>
+      <width>1291</width>
+      <height>401</height>
      </rect>
     </property>
     <property name="styleSheet">
