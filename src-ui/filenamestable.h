@@ -6,7 +6,7 @@
 
 class FileNamesTable : public QWidget { Q_OBJECT
 public:
-    FileNamesTable(const QStringList&, const QString&, QWidget *parent = nullptr);
+    FileNamesTable(QStringList&, QString&, QWidget *parent = nullptr);
 
 private slots:
     void onCellClicked(int, int);
