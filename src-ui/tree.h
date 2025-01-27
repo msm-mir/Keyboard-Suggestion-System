@@ -33,6 +33,9 @@ public:
     QStringList findCommonElements(QStringList, QStringList);
     QStringList removeCommonElements(QStringList, QStringList, QStringList, QStringList, QDir);
     void backtrack(QString);
+    void increaseLetter(QStringList&, Node*, int);
+    void decreaseLetter(QStringList&, Node*, int);
+    void changeLetter(QStringList&, Node*, int);
     void deleteWord(string);
 };
 

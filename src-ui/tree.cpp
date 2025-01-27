@@ -191,31 +191,53 @@ void Tree::backtrack(QString searchedWord) {
     QStringList words = editInputs(searchedWord);
 
     if (words.size() == 1) {
-        Node *root = this->root;
-
-        for (char c : searchedWord.toStdString()) {
-            if (root->getChildren(c) == nullptr) {
-                return;
-            }
-            root = root->getChildren(c);
-        }
-
         QStringList similarWords;
-        similarWords.append(increaseLetter(root));
-        similarWords.append(decreaseLetter(root));
-        similarWords.append(changeLetter(root));
+
+        increaseLetter(similarWords, searchedWord.toStdString());
+        decreaseLetter(similarWords, searchedWord.toStdString());
+        changeLetter(similarWords, searchedWord.toStdString());
     }
 }
 
-QStringList Tree::increaseLetter(Node *root) {
+void Tree::increaseLetter(QStringList &list, string word) {
+    Node *tmp, *root = this->root;
+    bool check = true;
+
+    for (int i = 0; i <= (int)word.length(); i++) {
+        for (int j = 0; j < 26; j++) {
+            check = true;
+
+            for (int k = 0; k < i; k++) {
+                if (tmp->getChildren(k) == nullptr) {
+                    check = false;
+                    break;
+                }
+                tmp = tmp->getChildren(k);
+            }
+            if (!check) break;
+
+            tmp = root->getChildren(j);
+
+            for (int k = i; k < (int)word.length(); k++) {
+                if (tmp->getChildren(k) == nullptr) {
+                    check = false;
+                    break;
+                }
+                tmp = tmp->getChildren(k);
+            }
+
+            if (check && tmp->getWord() != "") {
+                list.append(QString::fromStdString(tmp->getWord()));
+            }
+        }
+    }
+}
+
+void Tree::decreaseLetter(QStringList &list, string word) {
 
 }
 
-QStringList Tree::decreaseLetter(Node *root) {
-
-}
-
-QStringList Tree::changeLetter(Node *root) {
+void Tree::changeLetter(QStringList &list, string word) {
 
 }
 
