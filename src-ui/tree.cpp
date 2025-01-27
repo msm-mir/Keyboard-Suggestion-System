@@ -261,7 +261,35 @@ void Tree::decreaseLetter(QStringList &list, string word) {
 }
 
 void Tree::changeLetter(QStringList &list, string word) {
+    for (int i = 0; i < (int)word.length(); i++) {
+        for (int j = 0; j < 26; j++) {
+            Node *root = this->root;
+            bool check = true;
 
+            for (int k = 0; k < i; k++) {
+                if (root->getChildren(k) == nullptr) {
+                    check = false;
+                    break;
+                }
+                root = root->getChildren(k);
+            }
+            if (!check) continue;
+
+            root = root->getChildren(j);
+
+            for (int k = i + 1; k < (int)word.length(); k++) {
+                if (root->getChildren(k) == nullptr) {
+                    check = false;
+                    break;
+                }
+                root = root->getChildren(k);
+            }
+
+            if (check && root->getWord() != "") {
+                list.append(QString::fromStdString(root->getWord()));
+            }
+        }
+    }
 }
 
 //delete a word from the tree
