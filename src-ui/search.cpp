@@ -125,8 +125,12 @@ void Search::onSearchButtonClicked() {
                 error("Search Something!", true);
                 return;
             } else {
-                string search = ui->searchLineEdit->text().toStdString();
-                finalFileNames = tree.searchFileNames(search, "", "", dir);
+                string searchWord = ui->searchLineEdit->text().toStdString();
+                finalFileNames = tree.searchFileNames(searchWord, "", "", dir);
+
+                if (finalFileNames.isEmpty()) {
+                    tree.backtrack(searchWord);
+                }
             }
         } else {
             string include = ui->mustContainlineEdit->text().toStdString();
@@ -179,7 +183,6 @@ QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
 void Search::printFileNames(QStringList fileNames) {
     if (fileNames.isEmpty()) {
         error("Not Found!", true);
-        tree.backtrack();
         return;
     }
 

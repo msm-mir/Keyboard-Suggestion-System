@@ -78,7 +78,9 @@ QStringList Tree::searchFileNames(string include, string atLeastInclude, string 
     QStringList includeFileNames, atLeastIncludeFileNames, notIncludeFileNames;
     QStringList includeList, atLeastIncludeList, notIncludeList;
 
-    editInputs(include, atLeastInclude, notInclude, includeList, atLeastIncludeList, notIncludeList);
+    editInputs(include, includeList);
+    editInputs(atLeastInclude, atLeastIncludeList);
+    editInputs(notInclude, notIncludeList);
 
     int i = 0;
     for (QString s : includeList) {
@@ -108,22 +110,14 @@ QStringList Tree::searchFileNames(string include, string atLeastInclude, string 
 }
 
 //lower case, remove non-alphabet letters, list words seperate by ','
-void Tree::editInputs(string word1, string word2, string word3, QStringList &list1, QStringList &list2, QStringList &list3) {
-    toLowerCase(word1);
-    toLowerCase(word2);
-    toLowerCase(word3);
+void Tree::editInputs(string word, QStringList &list) {
+    toLowerCase(word);
 
-    QString qWord1 = QString::fromStdString(word1);
-    QString qWord2 = QString::fromStdString(word2);
-    QString qWord3 = QString::fromStdString(word3);
+    QString qWord = QString::fromStdString(word);
 
-    qWord1.remove(QRegularExpression("[^a-z,]+"));
-    qWord2.remove(QRegularExpression("[^a-z,]+"));
-    qWord3.remove(QRegularExpression("[^a-z,]+"));
+    qWord.remove(QRegularExpression("[^a-z,]+"));
 
-    list1 = qWord1.split(',', Qt::SkipEmptyParts);
-    list2 = qWord2.split(',', Qt::SkipEmptyParts);
-    list3 = qWord3.split(',', Qt::SkipEmptyParts);
+    list = qWord.split(',', Qt::SkipEmptyParts);
 }
 
 //search words in tree and return file names
@@ -189,6 +183,15 @@ QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary
     set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(difference, difference.begin()));
 
     return QStringList(difference.begin(), difference.end());
+}
+
+//search close words
+void Tree::backtrack(string searchedWord) {
+    QStringList words;
+    editInputs(searchedWord, words);
+    if (words.size() != 1) {
+
+    }
 }
 
 //delete a word from the tree
