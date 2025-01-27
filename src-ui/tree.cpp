@@ -74,13 +74,12 @@ void Tree::insertWord(string word, QString fileName) {
 }
 
 //find file names by words
-QStringList Tree::searchFileNames(string include, string atLeastInclude, string notInclude, QDir dir) {
+QStringList Tree::searchFileNames(QString include, QString atLeastInclude, QString notInclude, QDir dir) {
     QStringList includeFileNames, atLeastIncludeFileNames, notIncludeFileNames;
-    QStringList includeList, atLeastIncludeList, notIncludeList;
 
-    editInputs(include, includeList);
-    editInputs(atLeastInclude, atLeastIncludeList);
-    editInputs(notInclude, notIncludeList);
+    QStringList includeList = editInputs(include);
+    QStringList atLeastIncludeList = editInputs(atLeastInclude);
+    QStringList notIncludeList = editInputs(notInclude);
 
     int i = 0;
     for (QString s : includeList) {
@@ -110,14 +109,16 @@ QStringList Tree::searchFileNames(string include, string atLeastInclude, string 
 }
 
 //lower case, remove non-alphabet letters, list words seperate by ','
-void Tree::editInputs(string word, QStringList &list) {
-    toLowerCase(word);
+QStringList Tree::editInputs(QString word) {
+    string s = word.toStdString();
 
-    QString qWord = QString::fromStdString(word);
+    toLowerCase(s);
 
-    qWord.remove(QRegularExpression("[^a-z,]+"));
+    word = QString::fromStdString(s);
 
-    list = qWord.split(',', Qt::SkipEmptyParts);
+    word.remove(QRegularExpression("[^a-z,]+"));
+
+    return word.split(',', Qt::SkipEmptyParts);
 }
 
 //search words in tree and return file names
@@ -186,12 +187,36 @@ QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary
 }
 
 //search close words
-void Tree::backtrack(string searchedWord) {
-    QStringList words;
-    editInputs(searchedWord, words);
-    if (words.size() != 1) {
+void Tree::backtrack(QString searchedWord) {
+    QStringList words = editInputs(searchedWord);
 
+    if (words.size() == 1) {
+        Node *root = this->root;
+
+        for (char c : searchedWord.toStdString()) {
+            if (root->getChildren(c) == nullptr) {
+                return;
+            }
+            root = root->getChildren(c);
+        }
+
+        QStringList similarWords;
+        similarWords.append(increaseLetter(root));
+        similarWords.append(decreaseLetter(root));
+        similarWords.append(changeLetter(root));
     }
+}
+
+QStringList Tree::increaseLetter(Node *root) {
+
+}
+
+QStringList Tree::decreaseLetter(Node *root) {
+
+}
+
+QStringList Tree::changeLetter(Node *root) {
+
 }
 
 //delete a word from the tree

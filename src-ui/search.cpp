@@ -125,23 +125,17 @@ void Search::onSearchButtonClicked() {
                 error("Search Something!", true);
                 return;
             } else {
-                string searchWord = ui->searchLineEdit->text().toStdString();
-                finalFileNames = tree.searchFileNames(searchWord, "", "", dir);
+                finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
 
                 if (finalFileNames.isEmpty()) {
-                    tree.backtrack(searchWord);
+                    tree.backtrack(ui->searchLineEdit->text());
                 }
             }
         } else {
-            string include = ui->mustContainlineEdit->text().toStdString();
-            string atLeastInclude = ui->atLeastContainLineEdit->text().toStdString();
-            string notInclude = ui->notContainLineEdit->text().toStdString();
-
-            finalFileNames = tree.searchFileNames(include, atLeastInclude, notInclude, dir);
+            finalFileNames = tree.searchFileNames(ui->mustContainlineEdit->text(), ui->atLeastContainLineEdit->text(), ui->notContainLineEdit->text(), dir);
         }
     } else {
-        string search = ui->searchLineEdit->text().toStdString();
-        finalFileNames = tree.searchFileNames(search, "", "", dir);
+        finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
     }
 
     printFileNames(finalFileNames);
@@ -198,9 +192,5 @@ void Search::printFileNames(QStringList fileNames) {
 
     int x = (1920 - ui->tableWidget->width()) / 2;
     ui->tableWidget->move(x - 185, 310);
-
-    ui->tableWidget->horizontalHeader()->setVisible(false);
-    ui->tableWidget->verticalHeader()->setVisible(false);
-
     ui->tableWidget->show();
 }
