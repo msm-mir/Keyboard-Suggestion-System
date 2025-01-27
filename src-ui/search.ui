@@ -353,12 +353,14 @@ color: rgb(173, 174, 204);
     </property>
     <property name="styleSheet">
      <string notr="true">QListWidget {
-background-color: transparent;
+background-color: rgba(173, 174, 204, 0.2);
 border: none;
-border-radius: 8px;
+border-radius: 10px;
 font: 12pt &quot;Code Next-Trial&quot;;
-color: #ccadae;
-border-left-color: #adaecc;
+color: #adaecc;
+}
+QListWidget::item:selected {
+gridline-color: #adaecc;
 }</string>
     </property>
    </widget>

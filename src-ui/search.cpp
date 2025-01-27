@@ -22,6 +22,7 @@ void Search::connections() {
     connect(ui->uploadButton, SIGNAL(clicked()), this, SLOT(editFiles()));
     connect(ui->searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()));
     connect(ui->filterButton, SIGNAL(clicked()), this, SLOT(onFilterButtonClicked()));
+    connect(ui->listWidget, &QListWidget::itemClicked, this, &Search::onItemClicked);
 
     //click enter to search
     connect(ui->searchLineEdit, SIGNAL(returnPressed()), ui->searchButton, SLOT(click()));
@@ -191,13 +192,13 @@ void Search::createList() {
 
     ui->listWidget->setFixedHeight(251);
     ui->listWidget->show();
-
-    connect(ui->listWidget, SIGNAL(itemClicked()), this, SLOT(onItemClicked));
 }
 
 void Search::onItemClicked(QListWidgetItem *item) {
     ui->searchLineEdit->setText(item->text());
     ui->listWidget->hide();
+
+    onSearchButtonClicked();
 }
 
 //print file names
