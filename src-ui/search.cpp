@@ -4,6 +4,7 @@
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
 
+    ui->listWidget->hide();
     progress(0, false);
 
     connections();
@@ -112,6 +113,7 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
 
 void Search::onSearchButtonClicked() {
     ui->tableWidget->hide();
+    ui->listWidget->hide();
     error("", false);
 
     if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
@@ -126,16 +128,21 @@ void Search::onSearchButtonClicked() {
                 return;
             } else {
                 finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
-
-                if (finalFileNames.isEmpty()) {
-                    tree.backtrack(ui->searchLineEdit->text());
-                }
             }
         } else {
             finalFileNames = tree.searchFileNames(ui->mustContainlineEdit->text(), ui->atLeastContainLineEdit->text(), ui->notContainLineEdit->text(), dir);
         }
     } else {
+        if (ui->searchLineEdit->text().isEmpty()) {
+            error("Search Something!", true);
+            return;
+        }
+
         finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
+
+        if (finalFileNames.isEmpty()) {
+            createList();
+        }
     }
 
     printFileNames(finalFileNames);
@@ -171,6 +178,26 @@ QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
     set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersectionSet, intersectionSet.begin()));
 
     return QStringList(intersectionSet.begin(), intersectionSet.end());
+}
+
+void Search::createList() {
+    QStringList list = tree.backtrack(ui->searchLineEdit->text());
+
+    ui->listWidget->clear();
+
+    for (QString q : list) {
+        ui->listWidget->addItem(q);
+    }
+
+    ui->listWidget->setFixedHeight(251);
+    ui->listWidget->show();
+
+    connect(ui->listWidget, SIGNAL(itemClicked()), this, SLOT(onItemClicked));
+}
+
+void Search::onItemClicked(QListWidgetItem *item) {
+    ui->searchLineEdit->setText(item->text());
+    ui->listWidget->hide();
 }
 
 //print file names

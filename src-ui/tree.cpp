@@ -187,7 +187,7 @@ QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary
 }
 
 //search close words
-void Tree::backtrack(QString searchedWord) {
+QStringList Tree::backtrack(QString searchedWord) {
     QStringList words = editInputs(searchedWord);
 
     if (words.size() == 1) {
@@ -196,7 +196,13 @@ void Tree::backtrack(QString searchedWord) {
         increaseLetter(similarWords, searchedWord.toStdString());
         decreaseLetter(similarWords, searchedWord.toStdString());
         changeLetter(similarWords, searchedWord.toStdString());
+
+        similarWords.removeDuplicates();
+
+        return similarWords;
     }
+
+    return QStringList();
 }
 
 //add a letter to the word and search it
@@ -207,22 +213,25 @@ void Tree::increaseLetter(QStringList &list, string word) {
             bool check = true;
 
             for (int k = 0; k < i; k++) {
-                if (root->getChildren(k) == nullptr) {
+                if (root->getChildren(word[k]) == nullptr) {
                     check = false;
                     break;
                 }
-                root = root->getChildren(k);
+                root = root->getChildren(word[k]);
             }
             if (!check) continue;
 
-            root = root->getChildren(j);
+            if (root->getChildren(j + 'a') == nullptr) {
+                continue;
+            }
+            root = root->getChildren(j + 'a');
 
             for (int k = i; k < (int)word.length(); k++) {
-                if (root->getChildren(k) == nullptr) {
+                if (root->getChildren(word[k]) == nullptr) {
                     check = false;
                     break;
                 }
-                root = root->getChildren(k);
+                root = root->getChildren(word[k]);
             }
 
             if (check && root->getWord() != "") {
@@ -230,6 +239,7 @@ void Tree::increaseLetter(QStringList &list, string word) {
             }
         }
     }
+
 }
 
 void Tree::decreaseLetter(QStringList &list, string word) {
@@ -238,20 +248,20 @@ void Tree::decreaseLetter(QStringList &list, string word) {
         bool check = true;
 
         for (int k = 0; k < i; k++) {
-            if (root->getChildren(k) == nullptr) {
+            if (root->getChildren(word[k]) == nullptr) {
                 check = false;
                 break;
             }
-            root = root->getChildren(k);
+            root = root->getChildren(word[k]);
         }
         if (!check) continue;
 
         for (int k = i + 1; k < (int)word.length(); k++) {
-            if (root->getChildren(k) == nullptr) {
+            if (root->getChildren(word[k]) == nullptr) {
                 check = false;
                 break;
             }
-            root = root->getChildren(k);
+            root = root->getChildren(word[k]);
         }
 
         if (check && root->getWord() != "") {
@@ -267,22 +277,25 @@ void Tree::changeLetter(QStringList &list, string word) {
             bool check = true;
 
             for (int k = 0; k < i; k++) {
-                if (root->getChildren(k) == nullptr) {
+                if (root->getChildren(word[k]) == nullptr) {
                     check = false;
                     break;
                 }
-                root = root->getChildren(k);
+                root = root->getChildren(word[k]);
             }
             if (!check) continue;
 
-            root = root->getChildren(j);
+            if (root->getChildren(j + 'a') == nullptr) {
+                continue;
+            }
+            root = root->getChildren(j + 'a');
 
             for (int k = i + 1; k < (int)word.length(); k++) {
-                if (root->getChildren(k) == nullptr) {
+                if (root->getChildren(word[k]) == nullptr) {
                     check = false;
                     break;
                 }
-                root = root->getChildren(k);
+                root = root->getChildren(word[k]);
             }
 
             if (check && root->getWord() != "") {

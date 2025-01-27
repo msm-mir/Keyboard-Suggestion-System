@@ -10,6 +10,7 @@
 #include <QRegularExpression>
 #include <QString>
 #include <QList>
+#include <QListWidgetItem>
 #include <set>
 
 using namespace std;
@@ -34,12 +35,14 @@ public:
     void openFilesWriteOnly(QString, QString);
     void toLowerCase(string&);
     QStringList findCommonElements(QStringList, QStringList);
+    void createList();
     void printFileNames(QStringList);
 
 private slots:
     void editFiles();
     void onSearchButtonClicked();
     void onFilterButtonClicked();
+    void onItemClicked(QListWidgetItem*);
 
 private:
     Ui::Search *ui;
