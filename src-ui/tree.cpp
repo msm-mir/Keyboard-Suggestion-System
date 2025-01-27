@@ -199,42 +199,65 @@ void Tree::backtrack(QString searchedWord) {
     }
 }
 
+//add a letter to the word and search it
 void Tree::increaseLetter(QStringList &list, string word) {
-    Node *tmp, *root = this->root;
-    bool check = true;
-
     for (int i = 0; i <= (int)word.length(); i++) {
         for (int j = 0; j < 26; j++) {
-            check = true;
+            Node *root = this->root;
+            bool check = true;
 
             for (int k = 0; k < i; k++) {
-                if (tmp->getChildren(k) == nullptr) {
+                if (root->getChildren(k) == nullptr) {
                     check = false;
                     break;
                 }
-                tmp = tmp->getChildren(k);
+                root = root->getChildren(k);
             }
-            if (!check) break;
+            if (!check) continue;
 
-            tmp = root->getChildren(j);
+            root = root->getChildren(j);
 
             for (int k = i; k < (int)word.length(); k++) {
-                if (tmp->getChildren(k) == nullptr) {
+                if (root->getChildren(k) == nullptr) {
                     check = false;
                     break;
                 }
-                tmp = tmp->getChildren(k);
+                root = root->getChildren(k);
             }
 
-            if (check && tmp->getWord() != "") {
-                list.append(QString::fromStdString(tmp->getWord()));
+            if (check && root->getWord() != "") {
+                list.append(QString::fromStdString(root->getWord()));
             }
         }
     }
 }
 
 void Tree::decreaseLetter(QStringList &list, string word) {
+    for (int i = 0; i < (int)word.length(); i++) {
+        Node *root = this->root;
+        bool check = true;
 
+        for (int k = 0; k < i; k++) {
+            if (root->getChildren(k) == nullptr) {
+                check = false;
+                break;
+            }
+            root = root->getChildren(k);
+        }
+        if (!check) continue;
+
+        for (int k = i + 1; k < (int)word.length(); k++) {
+            if (root->getChildren(k) == nullptr) {
+                check = false;
+                break;
+            }
+            root = root->getChildren(k);
+        }
+
+        if (check && root->getWord() != "") {
+            list.append(QString::fromStdString(root->getWord()));
+        }
+    }
 }
 
 void Tree::changeLetter(QStringList &list, string word) {
