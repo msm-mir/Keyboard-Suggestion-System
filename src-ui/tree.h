@@ -32,7 +32,7 @@ public:
     QStringList fileNamesByCondition(QStringList, QStringList, QStringList, QStringList, QStringList, QDir);
     QStringList findCommonElements(QStringList, QStringList);
     QStringList removeCommonElements(QStringList, QStringList, QStringList, QStringList, QDir);
-    QStringList backtrack(QString);
+    QStringList suggestWords(QString);
     void increaseLetter(QStringList&, string);
     void decreaseLetter(QStringList&, string);
     void changeLetter(QStringList&, string);

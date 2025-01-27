@@ -187,7 +187,7 @@ QStringList Tree::removeCommonElements(QStringList primary1, QStringList primary
 }
 
 //search close words
-QStringList Tree::backtrack(QString searchedWord) {
+QStringList Tree::suggestWords(QString searchedWord) {
     QStringList words = editInputs(searchedWord);
 
     if (words.size() == 1) {

@@ -182,7 +182,7 @@ QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
 }
 
 void Search::createList() {
-    QStringList list = tree.backtrack(ui->searchLineEdit->text());
+    QStringList list = tree.suggestWords(ui->searchLineEdit->text());
 
     ui->listWidget->clear();
 
