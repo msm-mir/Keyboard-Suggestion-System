@@ -46,6 +46,6 @@ This project is a **search engine** that allows users to search for words across
 
 ---
 
-## 👨‍💻 Author
+## 👩🏻‍💻 Author
 
-- Developed as part of a C++ Data Structure course final project
+Developed as part of a C++ Data Structure course final project
