@@ -1,6 +1,6 @@
 # 🔎 Word Search Engine (C++ with Qt GUI)
 
-This project is a **search engine** that allows users to search for words across multiple documents using an efficient **Trie (prefix tree)** data structure. It is implemented in **C++** using the **Qt GUI framework**, as part of a Data Structure course.
+This project is a **search engine** that allows users to search for words across multiple documents using an efficient **Trie (prefix tree)** data structure. It is implemented in **C++** using the **Qt GUI framework**, as part of a Data Structure course and based on an object-oriented programming (OOP).
 
 ## 💡 Features
 
