@@ -125,7 +125,7 @@ void Search::onSearchButtonClicked() {
     if (ui->filterButton->isChecked()) {
         if (ui->mustContainlineEdit->text().isEmpty() && ui->atLeastContainLineEdit->text().isEmpty() && ui->notContainLineEdit->text().isEmpty()) {
             if (ui->searchLineEdit->text().isEmpty()) {
-                error("Search Something!", true);
+                error("Search Something", true);
                 return;
             } else {
                 finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
@@ -135,7 +135,7 @@ void Search::onSearchButtonClicked() {
         }
     } else {
         if (ui->searchLineEdit->text().isEmpty()) {
-            error("Search Something!", true);
+            error("Search Something", true);
             return;
         }
 
@@ -204,7 +204,7 @@ void Search::onItemClicked(QListWidgetItem *item) {
 //print file names
 void Search::printFileNames(QStringList fileNames) {
     if (fileNames.isEmpty()) {
-        error("Not Found!", true);
+        error("Not Found", true);
         return;
     }
 
