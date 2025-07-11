@@ -133,6 +133,10 @@ void Search::onSearchButtonClicked() {
                 return;
             } else {
                 finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
+
+                if (finalFileNames.isEmpty()) {
+                    createSuggestionList();
+                }
             }
         } else {
             finalFileNames = tree.searchFileNames(ui->mustContainlineEdit->text(), ui->atLeastContainLineEdit->text(), ui->notContainLineEdit->text(), dir);
@@ -146,7 +150,7 @@ void Search::onSearchButtonClicked() {
         finalFileNames = tree.searchFileNames(ui->searchLineEdit->text(), "", "", dir);
 
         if (finalFileNames.isEmpty()) {
-            createList();
+            createSuggestionList();
         }
     }
 
@@ -185,8 +189,9 @@ QStringList Search::findCommonElements(QStringList list1, QStringList list2) {
     return QStringList(intersectionSet.begin(), intersectionSet.end());
 }
 
-void Search::createList() {
+void Search::createSuggestionList() {
     QStringList list = tree.suggestWords(ui->searchLineEdit->text());
+    if (list.isEmpty()) return;
 
     ui->listWidget->clear();
 

@@ -33,7 +33,7 @@ public:
     void openFilesWriteOnly(QString, QString);
     void toLowerCase(string&);
     QStringList findCommonElements(QStringList, QStringList);
-    void createList();
+    void createSuggestionList();
     void printFileNames(QStringList);
 
 private slots:
