@@ -2,6 +2,14 @@
 
 This project is a **search engine** that allows users to search for words across multiple documents using an efficient **Trie (prefix tree)** data structure. It is implemented in **C++** using the **Qt GUI framework**, as part of a Data Structure course and based on an object-oriented programming (OOP).
 
+---
+
+<img width="500" height="266" alt="image" src="https://github.com/user-attachments/assets/38cb8b68-d7a1-4ea1-ab53-6869aca9c56e" />
+
+<img width="500" height="266" alt="image" src="https://github.com/user-attachments/assets/d55725de-3c72-46c2-a4f0-73e489d1fd0e" />
+
+---
+
 ## 💡 Features
 
 - Searching for a specific word across all given documents.
