@@ -1,4 +1,5 @@
 #include "tree.h"
+#include <set>
 
 Tree::Tree() {
     this->root = nullptr;

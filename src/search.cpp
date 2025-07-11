@@ -1,5 +1,7 @@
 #include "search.h"
 #include "ui_search.h"
+#include "filenamestable.h"
+#include <set>
 
 Search::Search(QWidget *parent) : QMainWindow(parent), ui(new Ui::Search) {
     ui->setupUi(this);
@@ -76,7 +78,9 @@ void Search::editFiles() {
     }
 
     if (!tree.fillTheTree(dir, fileNames)) {
-        error("Cannot Open Files!", true);
+        error("Cannot Open Files", true);
+    } else if (!folderPath.isEmpty()) {
+        error("", false);
     }
 
     progress(0, false);
@@ -87,7 +91,7 @@ void Search::openFilesReadOnly(QString fileName, QString &fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::ReadOnly)) {
-        error("Cannot Open Files!", true);
+        error("Cannot Open Files", true);
         return;
     }
 
@@ -102,7 +106,7 @@ void Search::openFilesWriteOnly(QString fileName, QString fileContent) {
     QFile file(dir.filePath(fileName));
 
     if (!file.open(QFile::WriteOnly)) {
-        error("Cannot Open Files For Writing!", true);
+        error("Cannot Open Files For Writing", true);
         return;
     }
 
@@ -118,7 +122,7 @@ void Search::onSearchButtonClicked() {
     error("", false);
 
     if (!dir.absolutePath().contains("C:/Users/bpc/Desktop/")) {
-        error("Select A Folder!", true);
+        error("Select A Folder", true);
         return;
     }
 

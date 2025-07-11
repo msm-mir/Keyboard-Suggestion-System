@@ -7,7 +7,6 @@
 #include <QRegularExpression>
 #include <QString>
 #include <QList>
-#include <set>
 
 using namespace std;
 
