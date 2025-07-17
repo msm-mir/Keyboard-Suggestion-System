@@ -50,10 +50,3 @@ This project is a **search engine** that allows users to search for words across
 
 - **Qt Creator IDE** (used to develop the entire project)
 - **Qt libraries and dependencies** (to build and run correctly)
-- Make sure the compiler is set to support C++17 or later
-
----
-
-## 👩🏻‍💻 Author
-
-Developed as part of a C++ Data Structure course final project
